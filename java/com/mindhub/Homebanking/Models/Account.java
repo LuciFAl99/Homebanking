@@ -1,10 +1,11 @@
 package com.mindhub.Homebanking.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Account {
@@ -19,6 +20,9 @@ public class Account {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="client_id")
     private Client client;
+
+    @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
+    private Set<Transaction> transaction = new HashSet<>();
 
     public Account() {
     }
@@ -61,12 +65,20 @@ public class Account {
     public void setBalance(double balance) {
         this.balance = balance;
     }
-    @JsonIgnore
+
     public Client getClient() {
         return client;
     }
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Set<Transaction> getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Set<Transaction> transaction) {
+        this.transaction = transaction;
     }
 }

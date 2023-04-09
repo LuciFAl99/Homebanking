@@ -6,7 +6,7 @@ const app = createApp({
       clientes: [],
       firstName: "",
       lastName: "",
-      email:""
+      email:"",
     }
   },
   created(){
@@ -14,9 +14,9 @@ const app = createApp({
   },
   methods: {
     loadData() {
-      axios.get('http://localhost:8080/rest/clients')
+      axios.get("http://localhost:8080/api/clients/")
         .then(response => {
-          this.clientes = response.data._embedded.clients;
+          this.clientes = response.data;
           console.log(this.clientes)
         })
         .catch(error => console.log(error));

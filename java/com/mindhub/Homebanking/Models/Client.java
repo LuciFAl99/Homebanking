@@ -24,6 +24,7 @@ public class Client {
     public Client() { }
 
     public Client(String firstName, String lastName, String email) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -31,6 +32,10 @@ public class Client {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -56,6 +61,8 @@ public class Client {
     public void setEmail(String email) {
         this.email = email;
     }
+
+
     public Set<Account> getAccounts() {
         return accounts;
     }
@@ -64,10 +71,6 @@ public class Client {
         this.accounts = accounts;
     }
 
-    public void addAccount (Account account){
-        account.setClient(this);
-        accounts.add(account);
-    }
 
     @Override
     public String toString() {

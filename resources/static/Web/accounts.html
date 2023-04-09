@@ -18,36 +18,37 @@
   <main id="app">
     <nav class="d-flex align-items-center">
       <a href="../manager.html">Clientes</a>
-      <a href="./accounts.html">Cuentas</a>
+      
     </nav>
-    <div class="container">
+   <div class="container">
       <h1>Tus Cuentas</h1>
-      <div class="row">
-        <div class="col-md-4" v-for="item in data" :key="item.id">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-4" v-for="account of clients.accounts">
           <div class="card fondo2">
-            <div class="card-body fondo">
-              <h5 class="card-title texto">{{ item.firstName }} {{ item.lastName }}</h5>
-              <h6 class="card-subtitle mb-2 text-muted texto">Email: {{ item.email }}</h6>
-              <template v-if="item.accounts.length === 1">
-                <p class="card-text">Número de cuenta: {{ item.accounts[0].number }}</p>
-                <p class="card-text">Fecha de creación: {{ item.accounts[0].creationDate }}</p>
-                <p class="card-text">Balance: {{ item.accounts[0].balance }}</p>
-              </template>
-              <template v-else class="fondo2">
+            <div class="card-body fondo" >
+       
+            
                 <ul class="list-group">
-                  <li class="list-group-item fondo2" v-for="account in item.accounts" :key="account.number">
-                    <p class="card-text">Número de cuenta: {{ account.number }}</p>
-                    <p class="card-text">Fecha de creación: {{ account.creationDate }}</p>
-                    <p class="card-text">Balance: {{ account.balance }}</p>
+                  <li class="list-group-item fondo2">
+                    <p class="card-text">Número de cuenta: {{account.number}}</p>
+                    <p class="card-text">Fecha de creación:{{account.creationDate}}</p>
+                    <p class="card-text">Balance:{{account.balance}}</p>
+              
                   </li>
+                  
+                  <a :href="`./account.html?id=`+account.id" class="btn btn-info mt-2">Transacciones</a>
                 </ul>
-              </template>
+     
+          
+
             </div>
+            
           </div>
           
         </div>
       </div>
-    </div>
+    </div> 
+   
   </main>
   
 

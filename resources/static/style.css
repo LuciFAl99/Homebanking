@@ -8,8 +8,14 @@ form, table, .json{
     background-color: #00a7f9;
     color: white;
     padding: 20px;
-    
 }
+.borde{
+    border-collapse: collapse;
+}
+td, th {
+    border: 1px solid black;
+    padding: 5px;
+  }
 main{
     height: 80vh;
 }
@@ -57,6 +63,13 @@ h1{
 .texto{
     text-align: center;
 }
+.credito {
+    background-color:green
+  }
+  .debito {
+    background-color: red
+  }
+  
 
 .color1 {color: #00031a;}
 .color2 {color: #003457;}
