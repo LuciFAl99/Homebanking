@@ -30,8 +30,8 @@
                     <tbody>
                         <tr>
                             <td>{{account.number}}</td>
-                            <td>{{account.creationDate}}</td>
-                            <td colspan="2">{{account.balance}}</td>
+                            <td>{{account.creationDate.slice(0, 10)}} a las {{account.creationDate.slice(11, 16)}} hs.</td>
+                            <td colspan="2">${{account.balance}}</td>
                         </tr>
                     </tbody>
                 </thead>
@@ -47,7 +47,7 @@
                     <tr v-for="transaction in transactions"
                     :class="transaction.type.toLowerCase() === 'credito' ? 'credito' : 'debito'">
                         <td>{{ transaction.type}}</td>
-                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.date.slice(0, 10)}} a las {{transaction.date.slice(11, 16)}} hs.</td>
                         <td>{{ transaction.description }}</td>
                         <td>{{ transaction.amount }}</td>
                     </tr>
@@ -59,6 +59,7 @@
 
     </main>
 </body>
+<footer class="mt-4"></footer>
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./account.js"></script>

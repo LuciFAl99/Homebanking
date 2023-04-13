@@ -16,11 +16,15 @@ td, th {
     border: 1px solid black;
     padding: 5px;
   }
+  h2,h3{
+    text-align: center;
+  }
 main{
-    height: 80vh;
+    min-height: 81vh;
 }
 footer{
-    min-height: 10vh;
+    background-color: #0068a2;
+    height: 15vh;
 }
 
 pre{
@@ -32,7 +36,7 @@ body{
 }
 nav{
     height: 10vh;
-    background-color: #0068a2;;
+    background-color: #0068a2;
 }
 nav a{
     text-decoration: none;

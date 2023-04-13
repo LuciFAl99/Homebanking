@@ -1,6 +1,5 @@
 package com.mindhub.Homebanking.Dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mindhub.Homebanking.Models.Client;
 
 import java.util.List;
@@ -14,9 +13,7 @@ public class ClientDto {
     private String email;
     private List<AccountDto> accounts;
 
-    public ClientDto() {
-    }
-
+    private List<ClientLoanDto> loans;
 
     public ClientDto(Client client) {
         this.id = client.getId();
@@ -26,6 +23,10 @@ public class ClientDto {
         this.accounts = client.getAccounts()
                 .stream()
                 .map(account -> new AccountDto(account))
+                .collect(Collectors.toList());
+        this.loans = client.getClientLoans()
+                .stream()
+                .map(loan -> new ClientLoanDto(loan))
                 .collect(Collectors.toList());
     }
 
@@ -69,6 +70,14 @@ public class ClientDto {
 
     public void setAccounts(List<AccountDto> accounts) {
         this.accounts = accounts;
+    }
+
+    public List<ClientLoanDto> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(List<ClientLoanDto> loans) {
+        this.loans = loans;
     }
 
     @Override

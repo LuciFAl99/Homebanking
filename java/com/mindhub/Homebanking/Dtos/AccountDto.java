@@ -24,8 +24,7 @@ public class AccountDto {
         this.balance = account.getBalance();
         this.transactions = account.getTransaction()
                 .stream()
-                .map(transaction -> new TransactionDto(transaction))
-                .collect(Collectors.toList());
+                .map(transaction -> new TransactionDto(transaction)).collect(Collectors.toList());
     }
 
     public long getId() {

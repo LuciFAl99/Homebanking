@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Entity
 public class Client {
 
@@ -17,7 +18,11 @@ public class Client {
     private String lastName;
     private String email;
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-    Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<ClientLoan> clientLoans = new HashSet<>();
+
 
 
 
@@ -72,6 +77,29 @@ public class Client {
     }
 
 
+
+    public Set<ClientLoan> getLoans() {
+        return clientLoans;
+    }
+
+    public void setLoans(Set<ClientLoan> loans) {
+        this.clientLoans = loans;
+    }
+
+    public Set<ClientLoan> getClientLoans() {
+        return clientLoans;
+    }
+
+    public void addAccount(Account account) {
+        account.setClient(this);
+        accounts.add(account);
+    }
+
+    public void addClientLoan(ClientLoan clientLoan) {
+        clientLoan.setClient(this);
+        clientLoans.add(clientLoan);
+    }
+
     @Override
     public String toString() {
         return "Client{" +
@@ -82,4 +110,7 @@ public class Client {
                 ", accounts=" + accounts +
                 '}';
     }
+
+
+
 }

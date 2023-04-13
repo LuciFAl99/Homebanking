@@ -4,6 +4,7 @@ package com.mindhub.Homebanking.Controllers;
 
 import com.mindhub.Homebanking.Dtos.ClientDto;
 import com.mindhub.Homebanking.Models.Client;
+import com.mindhub.Homebanking.Models.ClientLoan;
 import com.mindhub.Homebanking.Repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static java.util.stream.Collectors.toList;
 
@@ -28,13 +30,9 @@ public class ClientController {
         return clientRepository.findAll().stream().map(client -> new ClientDto(client)).collect(toList());
     }
     @RequestMapping("/api/clients/{id}")
-
-    public ClientDto getClient(@PathVariable Long id) {
+    public  Optional<ClientDto> getClient(@PathVariable Long id) {
         Optional<Client> optionalClient = clientRepository.findById(id);
-        return  optionalClient.map(client -> new ClientDto(client)).orElse(null);
-
+        return  optionalClient.map(client -> new ClientDto(client));
     }
-
-
 
 }
