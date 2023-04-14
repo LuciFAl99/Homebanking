@@ -18,7 +18,6 @@ public class Account {
     private double balance;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="client")
     private Client client;
 
     @OneToMany(mappedBy="account", fetch=FetchType.EAGER)
