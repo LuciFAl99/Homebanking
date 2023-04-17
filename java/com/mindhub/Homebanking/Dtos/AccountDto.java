@@ -11,7 +11,6 @@ public class AccountDto {
     private String number;
     private LocalDateTime creationDate;
     private double balance;
-
     private List<TransactionDto> transactions;
 
 
@@ -31,39 +30,20 @@ public class AccountDto {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getNumber() {
         return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
     public double getBalance() {
         return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 
     public List<TransactionDto> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(List<TransactionDto> transactions) {
-        this.transactions = transactions;
-    }
 }

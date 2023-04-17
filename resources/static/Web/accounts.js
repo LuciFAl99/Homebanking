@@ -3,22 +3,28 @@ const { createApp } = Vue;
 const app = createApp({
   data() {
     return {
-      clients:[],
+      clients: [],
       id: (new URLSearchParams(location.search)).get("id")
     };
   },
-  created(){
+  created() {
     this.getClientInfo()
   },
   methods: {
     getClientInfo() {
-      axios.get(`http://localhost:8080/api/clients/`+ this.id)
-      .then(response => {
-       this.clients = response.data;
-       console.log(this.clients);
-      })
-   },
-  }
-})
+      axios.get(`http://localhost:8080/api/clients/` + this.id)
+        .then(response => {
+          this.clients = response.data;
+          console.log(this.clients);
+        })
+      //     getClientInfo() {
+      //       axios.get(`http://localhost:8080/api/clients/1`)
+      //       .then(response => {
+      //        this.clients = response.data;
+      //        console.log(this.clients);
+      //      })
+        },
+       }
+    })
 
 app.mount("#app");

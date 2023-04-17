@@ -7,10 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static com.mindhub.Homebanking.Models.CardColor.GOLD;
 import static com.mindhub.Homebanking.Models.TransactionType.CREDITO;
 import static com.mindhub.Homebanking.Models.TransactionType.DEBITO;
 
@@ -19,10 +21,9 @@ public class HomebankingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
-
 	}
 	@Bean
-	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository){
+	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return (args) -> {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime tomorrow = now.plusDays(1);
@@ -36,12 +37,12 @@ public class HomebankingApplication {
 			Account account4 = new Account("VIN004", tomorrow, 87700);
 			Account account5 = new Account("VIN005", now, 9876);
 
-			Transaction transaction1 = new Transaction(DEBITO, -2223, "TransacciónPrimera", tomorrow);
-			Transaction transaction2 = new Transaction(CREDITO, 4576, "Transacción", tomorrow);
-			Transaction transaction3 = new Transaction(DEBITO, -690576, "TransacciónUltima", now);
-			Transaction transaction4 = new Transaction(CREDITO, 7876, "Transacción4", tomorrow);
-			Transaction transaction5 = new Transaction(DEBITO, -3476, "Transacción5", tomorrow);
-			Transaction transaction6 = new Transaction(DEBITO, -6576, "Transacción6", now);
+			Transaction transaction1 = new Transaction(TransactionType.DEBITO, -2223, "TransacciónPrimera", tomorrow);
+			Transaction transaction2 = new Transaction(TransactionType.CREDITO, 4576, "Transacción", tomorrow);
+			Transaction transaction3 = new Transaction(TransactionType.DEBITO, -690576, "TransacciónUltima", now);
+			Transaction transaction4 = new Transaction(TransactionType.CREDITO, 7876, "Transacción4", tomorrow);
+			Transaction transaction5 = new Transaction(TransactionType.DEBITO, -3476, "Transacción5", tomorrow);
+			Transaction transaction6 = new Transaction(TransactionType.DEBITO, -6576, "Transacción6", now);
 
 			repository.save(client1);
 			repository.save(client2);
@@ -113,7 +114,23 @@ public class HomebankingApplication {
 			clientLoanRepository.save(clientLoan3);
 			clientLoanRepository.save(clientLoan4);
 
+			LocalDate thru = LocalDate.now().plusYears(5);
+			LocalDate from = LocalDate.now();
 
+			Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4567 3986 0987 6738", 564, thru, from);
+			Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "1653 2345 0987 1435", 698, thru, from);
+			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(), CardType.CREDITO, CardColor.SILVER, "6789 4567 3214 7654", 765, thru, from);
+			Card card4 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.SILVER, "6574 8934 6543 2345", 857, thru, from);
+
+			client1.addCard(card1);
+			client1.addCard(card2);
+			client2.addCard(card3);
+			client1.addCard(card4);
+
+			cardRepository.save(card1);
+			cardRepository.save(card2);
+			cardRepository.save(card3);
+			cardRepository.save(card4);
 
 		};
 	}
