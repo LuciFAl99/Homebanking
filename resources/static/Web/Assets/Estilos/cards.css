@@ -4,32 +4,56 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Josefin Sans', sans-serif;
 }
-nav{
-    height: 10vh;
-    background-color: #0068a2;
+
+body {
+    height: 100vh;
+    background-image:  url(../Imágenes/subtle-prism.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: center;
 }
-nav a{
-    text-decoration: none;
-    border-radius: 5px;
-    width: 5rem;
-    height: 2rem;
-    background-color: #003457;
-    color: #00f1ff;
-    font-size: large;
+nav {
+    width: 80%;
+    margin: auto;
+    padding: 35px 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 0.5rem;
-    
+    justify-content: space-between;
 }
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    margin-right: 2rem;
+    font-size: large;
+    position: relative;
+}
+
+nav a::before {
+    content: "";
+    height: 3px;
+    width: 0%;
+    background: yellowgreen;
+    position: absolute;
+    left: 0;
+    bottom: -12px;
+    transition: 0.4s ease-out;
+}
+
+nav a:hover::before {
+    width: 100%;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+}
+
 h2,h3{
     text-align: center;
   }
-main{
-    min-height: 81vh;
-}
 footer{
     background-color: #0068a2;
     height: 15vh;
@@ -38,7 +62,6 @@ footer{
 .container {
     min-height: 100vh;
     width: 100%;
-    background: #000;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -148,6 +171,11 @@ footer{
 
 .card:hover .card-inner {
     transform: rotateY(-180deg);
+}
+.tarjetas{
+    display: flex;
+    justify-content: space-around;
+    
 }
 
 
