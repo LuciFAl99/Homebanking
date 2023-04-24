@@ -2,10 +2,12 @@ package com.mindhub.Homebanking;
 
 import com.mindhub.Homebanking.Models.*;
 import com.mindhub.Homebanking.Repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,14 +24,17 @@ public class HomebankingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
 	}
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	@Bean
 	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
 		return (args) -> {
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime tomorrow = now.plusDays(1);
-			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");
-			Client client2 = new Client("Gonzalo", "Martinez", "gonzalo@mindhub.com");
-			Client client3 = new Client("Maria", "Gonzalez", "maria@mindhub.com");
+			Client client1 = new Client("Melba", "Morel", "melba@mindhub.com", passwordEncoder.encode("Melba123"));
+			Client client2 = new Client("Gonzalo", "Martinez", "gonzalo@mindhub.com", passwordEncoder.encode("Gonzalo123"));
+			Client client3 = new Client("Maria", "Gonzalez", "maria@mindhub.com", passwordEncoder.encode("Maria123"));
+            Client admin = new Client ("Admin", "admin", "admin@admin.com", passwordEncoder.encode("admin"));
 
 			Account account1 = new Account("VIN001", now, 5000);
 			Account account2 = new Account("VIN002", tomorrow, 7500);
@@ -47,6 +52,7 @@ public class HomebankingApplication {
 			repository.save(client1);
 			repository.save(client2);
 			repository.save(client3);
+			repository.save(admin);
 
 			client1.addAccount(account1);
 			client1.addAccount(account2);
@@ -83,8 +89,6 @@ public class HomebankingApplication {
 			accountRepository.save(account3);
 			accountRepository.save(account4);
 			accountRepository.save(account5);
-
-
 
 			Loan loan1 = new Loan("Hipotecario", 500000, new ArrayList<>(Arrays.asList(12, 24, 36, 48, 60)));
 			Loan loan2 = new Loan("Personal", 100000, new ArrayList<>(Arrays.asList(6, 12, 24)));

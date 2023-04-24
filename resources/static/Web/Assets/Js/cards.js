@@ -5,7 +5,8 @@ const app = createApp({
         return {
             cards: [],
             debitCards: [],
-            creditCards: []
+            creditCards: [],
+            id: (new URLSearchParams(location.search)).get("id")
         }
     },
     created() {
@@ -13,7 +14,7 @@ const app = createApp({
     },
     methods: {
         getCardsInfo() {
-            axios.get(`http://localhost:8080/api/clients/1`)
+            axios.get("http://localhost:8080/api/clients/current")
                 .then(response => {
                     this.cards = response.data.cards;
                     console.log(this.cards);
@@ -25,6 +26,10 @@ const app = createApp({
 
                 })
         },
+        logout() {
+            axios.post('/api/logout')
+                .then(() => window.location.href = "/Web/index.html")
+        }
     }
 })
 

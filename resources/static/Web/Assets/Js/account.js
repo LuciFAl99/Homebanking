@@ -23,6 +23,11 @@ const app = createApp({
                 })
                 .catch(error => console.log(error));
         },
+        
+        logout() {
+          axios.post('/api/logout')
+              .then(() => window.location.href = "/Web/index.html")
+      },
 
         sortTransactions() {
             this.transactions = this.account.transactions.sort((a, b) => b.id - a.id);

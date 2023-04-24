@@ -45,7 +45,12 @@ nav a::before {
 nav a:hover::before {
     width: 100%;
 }
-
+main{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 3rem;
+}
 .logo {
     width: 100px;
     height: 100px;
@@ -64,8 +69,13 @@ footer{
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    align-self: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 2rem;
 }
+
+
 
 .card {
     width: 500px;
@@ -102,7 +112,11 @@ footer{
     align-items: center;
     justify-content: space-between;
 }
-
+.active{
+    background-color: #ff2c7d;
+    padding: 1rem;
+    border-radius: 6px;
+}
 .map-img {
     width: 100%;
     position: absolute;
@@ -115,6 +129,7 @@ footer{
 .card-no {
     font-size: 35px;
     margin-top: 60px;
+
 }
 
 .card-holder {

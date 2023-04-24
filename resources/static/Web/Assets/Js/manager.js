@@ -22,6 +22,10 @@ const app = createApp({
         .catch(error => console.log(error));
         
     },
+    logout() {
+        axios.post('/api/logout')
+            .then(() => window.location.href = "/Web/index.html")
+    },
     addClient() {
       this.postClient();
     },

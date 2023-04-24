@@ -20,15 +20,15 @@
       <img src="./Assets/Imágenes/Mindhub Brothers.gif" alt="" class="logo">
 
       <div>
-          <a href="./index.html">Home</a>
-          <a href="#">Cuentas</a>
-          <a href="./cards.html">Tarjetas</a>
+        <a href="./accounts.html" class="active">Cuentas</a>
+        <a href="./cards.html">Tarjetas</a>
+        <a href="" @click="logout">Cerrar Sesión</a>
       </div>
   </nav>
     <div class="container">
       <h1>Tus Cuentas</h1>
       <div class="row d-flex justify-content-center">
-        <div class="col-md-4" v-for="account of clients.accounts">
+        <div class="col-md-4" v-if="clients.accounts && clients.accounts.length > 0" v-for="account of clients.accounts">
           <div class="card fondo2">
             <div class="card-body fondo">
 
@@ -50,6 +50,9 @@
 
           </div>
 
+        </div>
+        <div v-else>
+          <h3>Aún no hay cuentas creadas</h3>
         </div>
       </div>
       <h2 class="mt-3">Prestamos</h2>

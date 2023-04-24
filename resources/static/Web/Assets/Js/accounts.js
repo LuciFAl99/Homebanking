@@ -12,12 +12,16 @@ const app = createApp({
   },
   methods: {
            getClientInfo() {
-             axios.get(`http://localhost:8080/api/clients/1`)
+             axios.get("http://localhost:8080/api/clients/current")
              .then(response => {
              this.clients = response.data;
               console.log(this.clients);
             })
         },
+        logout() {
+          axios.post('/api/logout')
+              .then(() => window.location.href = "/Web/index.html")
+      }
        }
     })
 

@@ -99,7 +99,11 @@ h1 {
     text-align: center;
     padding: 2rem;
 }
-
+.active{
+    background-color: #ff2c7d;
+    padding: 1rem;
+    border-radius: 6px;
+}
 .fondo {
     background-color: #00a7f9;
 }

@@ -9,20 +9,19 @@
     <link rel="stylesheet" href="./Assets/Estilos/cards.css">
 </head>
 
-<body>
-    <main id="app">
-        <nav>
-            <img src="./Assets/Imágenes/Mindhub Brothers.gif" alt="" class="logo">
+<body  id="app">
+    <nav>
+        <img src="./Assets/Imágenes/Mindhub Brothers.gif" alt="" class="logo">
 
-            <div>
-                <a href="./index.html">Home</a>
-                <a href="./accounts.html">Cuentas</a>
-                <a href="#">Tarjetas</a>
-            </div>
-        </nav>
-
-
+        <div>
+            <a href="./accounts.html">Cuentas</a>
+            <a href="./cards.html" class="active">Tarjetas</a>
+            <a href="" @click="logout">Cerrar Sesion</a>
+        </div>
+    </nav>
+    <main>
             <div class="container">
+                <h2>Tarjetas de crédito</h2>
                 <div class="card"  v-if="creditCards.length !=0" v-for="creditCard of creditCards">
                     <div class="card-inner">
                         <div class="front">
@@ -64,10 +63,11 @@
                     </div>
                 </div>
                  <div v-else>
-                <h3> You haven't cards</h3>
+                <h3> Aún no tienes tarjetas de crédito</h3>
              </div>
             </div>
             <div class="container debit">
+                <h2>Tarjetas de Debito</h2>
                 <div class="card" v-if="debitCards.length !=0" v-for="debitCard of debitCards">
                     <div class="card-inner">
                         <div class="front">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
                 <div v-else>
-                    <h3> You haven't cards</h3>
+                    <h3> Aún no tienes tarjetas de débito</h3>
                  </div>
     
             </div>
