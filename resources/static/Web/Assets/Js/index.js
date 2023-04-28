@@ -9,14 +9,10 @@ const app = createApp({
             lastName: "",
             postEmail: "",
             postPassword: "",
-            alerts: {
-                email: '',
-                password: ''
-            },
             errorLogin:false,
             confirmPassword:"",
             errorPassCreate:false,
-            errorUserCreate:false,
+            errorMessage: ''
         }
     },
     methods: {
@@ -34,19 +30,6 @@ const app = createApp({
               .catch(err=>this.errorLogin = true);
               
           },
-          
-        // register() {
-        //     if(this.postPassword == this.confirmPassword){ 
-        //         axios.post('/api/clients',`firstName=${this.firstName}&lastName=${this.lastName}&email=${this.postEmail}&password=${this.postPassword}`,{headers:{'content-type':'application/x-www-form-urlencoded'}}).then(response => {
-        //             if(response.status == 201){
-        //                 this.login();
-        //             }
-        //         }).catch(error=>this.errorUserCreate = true);
-        //     }else{
-        //         this.errorPassCreate = true;
-        //     } 
-
-        // }
 
         register() {
             axios.post('/api/clients', "firstName=" + this.firstName + "&lastName=" + this.lastName + "&email=" + this.postEmail + "&password=" + this.postPassword, { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
@@ -57,8 +40,17 @@ const app = createApp({
                         .then(() => window.location.href = "/Web/accounts.html")
 
                 })
-                .catch(err => ('Datos Incorrectos ' + err))
-
+                .catch(err => {
+                  if (err.response && err.response.status === 409) {
+                    this.errorMessage = 'El correo electrónico ya existe';
+                  } else {
+                    console.error(err);
+                    this.errorMessage = 'Ha ocurrido un error al registrar el usuario';
+                  }
+                  if(this.postPassword !== this.confirmPassword){
+                    this.errorPassCreate = true
+                  }
+                });    
         }
         
     },

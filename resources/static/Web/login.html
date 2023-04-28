@@ -64,14 +64,14 @@
 									placeholder="Email" name="nombreUsuario" required>
 								<div class="valid-feedback">Correcto.</div>
 								<div class="invalid-feedback">Por favor complete este campo.</div>
-								<div v-if="alerts.email" class="alert alert-danger" v-bind:class="{ 'mt-2': alerts.password }">{{ alerts.email }}</div>
+							
 							</div>
 							<div class="form-group">
 								<div class="icon d-flex align-items-center justify-content-center"><span
 										class="fa fa-lock"></span></div>
 								<input v-model="password" type="password" class="form-control" id="password"
 									placeholder="Ingrese su contraseña" name="password">
-									<div v-if="alerts.password" class="alert alert-danger" v-bind:class="{ 'mt-2': alerts.password }">{{ alerts.password }}</div>
+									
 							</div>
 							<p v-show="errorLogin" class="text-danger pErrorLogin">El email ingresado o la contraseña son incorrectos</p>
 							<div class="form-group">

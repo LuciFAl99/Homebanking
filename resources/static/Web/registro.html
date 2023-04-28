@@ -55,6 +55,7 @@
 								<div class="valid-feedback">Correcto.</div>
 								<div class="invalid-feedback">Por favor complete este campo.</div>
 							</div>
+							<p v-show="errorMessage" class="text-danger pErrorLogin">El email ya existe</p>
 							<div class="form-group">
 								<div class="icon d-flex align-items-center justify-content-center"><span
 										class="fa fa-lock"></span></div>
@@ -63,16 +64,16 @@
 									<div class="valid-feedback">Correcto.</div>
 									<div class="invalid-feedback">Por favor complete este campo.</div>
 							</div>
-							<!-- <div class="form-group">
+							 <div class="form-group">
 								<div class="icon d-flex align-items-center justify-content-center"><span
 										class="fa fa-lock"></span></div>
 								<input v-model="confirmPassword" type="password" class="form-control" placeholder="Confirm Password"
 									required>
 									<div class="valid-feedback">Correcto.</div>
 									<div class="invalid-feedback">Por favor complete este campo.</div>
-							</div> -->
-							<!-- <p v-show="errorUserCreate" class="text-danger pErrorLogin">Email inválido</p>
-							<p v-show="errorPassCreate" class="text-danger pErrorLogin">Las contraseñas no coinciden</p> -->
+							</div> 
+					
+							<p v-show="errorPassCreate" class="text-danger pErrorLogin">Las contraseñas no coinciden</p> 
 							<div class="form-group">
 								<button type="submit" class="btn form-control btn-primary rounded submit px-3"
 									@click="register">Registrarse</button>

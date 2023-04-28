@@ -117,6 +117,17 @@ footer{
     padding: 1rem;
     border-radius: 6px;
 }
+.boton{
+    background-color: #ff2c7d;
+    padding: 1rem;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+}
+.div-boton{
+    display: flex;
+    justify-content: center;
+}
 .map-img {
     width: 100%;
     position: absolute;

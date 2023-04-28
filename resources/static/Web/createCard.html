@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./Assets/Estilos/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <img src="./Assets/Imágenes/Mindhub Brothers.gif" alt="" class="logo">
+  
+        <div>
+          <a href="./accounts.html" class="active">Cuentas</a>
+          <a href="./cards.html">Tarjetas</a>
+          <a href="" @click="logout">Cerrar Sesión</a>
+        </div>
+      </nav>
+    <main id="app">
+        <form @submit.prevent="createCard" class="d-flex flex-column">
+            <label for="cardType">Card Type: </label>
+            <select v-model="cardType" id="cardType" class="form-select" required>
+                <option value="" selected disabled>Select</option>
+                <option value="credito">Credit</option>
+                <option value="debito">Debit</option>
+            </select>
+            <label for="cardColor">Card Color: </label>
+            <select v-model="cardColor" id="cardColor" class="form-select" required>
+                <option value="" selected disabled>Select</option>
+                <option value="silver">Silver</option>
+                <option value="gold">Gold</option>
+                <option value="titanium">Titanium</option>
+            </select>
+            <div class="d-flex justify-content-between mt-3">
+                <button type="reset" class="btn btn-danger"
+                    @click="isNewCardModal = false, cardType = '', cardColor=''">Cancel</button>
+                <button type="submit" id="submitCard" class="btn btn-success">Confirm</button>
+            </div>
+        </form>
+    </main>
+    
+</body>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./Assets/Js/cards.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</html>

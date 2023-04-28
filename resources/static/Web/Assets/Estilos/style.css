@@ -143,3 +143,8 @@ h1 {
     position: absolute;
     color: white;
 }
+.boton{
+    background-color: #ff2c7d;
+    padding: 1rem;
+    border-radius: 6px;
+}

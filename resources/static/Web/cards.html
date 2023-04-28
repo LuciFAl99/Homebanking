@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./Assets/Estilos/cards.css">
 </head>
 
-<body  id="app">
+<body id="app">
     <nav>
         <img src="./Assets/Imágenes/Mindhub Brothers.gif" alt="" class="logo">
 
@@ -19,103 +19,107 @@
             <a href="" @click="logout">Cerrar Sesion</a>
         </div>
     </nav>
+    <div class="div-boton" v-show="cards.length < 6"> 
+        <a type="button" class="boton" href="./createCard.html">Crear Tarjeta</a>
+    </div>
     <main>
-            <div class="container">
-                <h2>Tarjetas de crédito</h2>
-                <div class="card"  v-if="creditCards.length !=0" v-for="creditCard of creditCards">
-                    <div class="card-inner">
-                        <div class="front">
-                            <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                            <div class="row">
-                                <img src="https://i.ibb.co/G9pDnYJ/chip.png" width="60px">
-                                <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="60px">
-                            </div>
-                            <div class="row card-no">
-                                <p>{{creditCard.number}}</p>
-                            </div>
-                            <div class="row card-holder">
-                                <p>Titular de la tarjeta</p>
-                                <p>Fecha de validez</p>
-                            </div>
-                            <div class="row name">
-                                <p>{{creditCard.cardholder}}</p>
-                                <p>{{creditCard.thruDate}}</p>
-                            </div>
+       
+        <div class="container">
+            <h2>Tarjetas de crédito</h2>
+            <div class="card" v-if="creditCards.length !=0" v-for="creditCard of creditCards">
+                <div class="card-inner">
+                    <div class="front">
+                        <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
+                        <div class="row">
+                            <img src="https://i.ibb.co/G9pDnYJ/chip.png" width="60px">
+                            <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="60px">
                         </div>
-                        <div class="back">
-                            <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                            <div class="bar"></div>
-                            <div class="row card-cvv">
-                                <div>
-                                    <img src="https://i.ibb.co/S6JG8px/pattern.png">
-                                </div>
-                                <p>{{creditCard.cvv}}</p>
+                        <div class="row card-no">
+                            <p>{{creditCard.number}}</p>
+                        </div>
+                        <div class="row card-holder">
+                            <p>Titular de la tarjeta</p>
+                            <p>Fecha de validez</p>
+                        </div>
+                        <div class="row name">
+                            <p>{{creditCard.cardholder}}</p>
+                            <p>{{creditCard.thruDate}}</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
+                        <div class="bar"></div>
+                        <div class="row card-cvv">
+                            <div>
+                                <img src="https://i.ibb.co/S6JG8px/pattern.png">
                             </div>
-                            <div class="row card-text">
-                                <p>this is a virtual card design using HTML and CSS. You can aslo design something like
-                                    this.</p>
-                            </div>
-                            <div class="row signature">
-                                <p>CUSTOMER SIGNATURE</p>
-                                <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="80px">
-                            </div>
+                            <p>{{creditCard.cvv}}</p>
+                        </div>
+                        <div class="row card-text">
+                            <p>this is a virtual card design using HTML and CSS. You can aslo design something like
+                                this.</p>
+                        </div>
+                        <div class="row signature">
+                            <p>CUSTOMER SIGNATURE</p>
+                            <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="80px">
                         </div>
                     </div>
                 </div>
-                 <div v-else>
+            </div>
+            <div v-else>
                 <h3> Aún no tienes tarjetas de crédito</h3>
-             </div>
             </div>
-            <div class="container debit">
-                <h2>Tarjetas de Debito</h2>
-                <div class="card" v-if="debitCards.length !=0" v-for="debitCard of debitCards">
-                    <div class="card-inner">
-                        <div class="front">
-                            <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                            <div class="row">
-                                <img src="https://i.ibb.co/G9pDnYJ/chip.png" width="60px">
-                                <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="60px">
-                            </div>
-                            <div class="row card-no">
-                                <p>{{debitCard.number}}</p>
-                            </div>
-                            <div class="row card-holder">
-                                <p>Titular de la tarjeta</p>
-                                <p>Fecha de validez</p>
-                            </div>
-                            <div class="row name">
-                                <p>{{debitCard.cardholder}}</p>
-                                <p>{{debitCard.thruDate}}</p>
-                            </div>
+        </div>
+        <div class="container debit">
+            <h2>Tarjetas de Debito</h2>
+            <div class="card" v-if="debitCards.length !=0" v-for="debitCard of debitCards">
+                <div class="card-inner">
+                    <div class="front">
+                        <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
+                        <div class="row">
+                            <img src="https://i.ibb.co/G9pDnYJ/chip.png" width="60px">
+                            <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="60px">
                         </div>
-                        <div class="back">
-                            <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                            <div class="bar"></div>
-                            <div class="row card-cvv">
-                                <div>
-                                    <img src="https://i.ibb.co/S6JG8px/pattern.png">
-                                </div>
-                                <p>{{debitCard.cvv}}</p>
+                        <div class="row card-no">
+                            <p>{{debitCard.number}}</p>
+                        </div>
+                        <div class="row card-holder">
+                            <p>Titular de la tarjeta</p>
+                            <p>Fecha de validez</p>
+                        </div>
+                        <div class="row name">
+                            <p>{{debitCard.cardholder}}</p>
+                            <p>{{debitCard.thruDate}}</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
+                        <div class="bar"></div>
+                        <div class="row card-cvv">
+                            <div>
+                                <img src="https://i.ibb.co/S6JG8px/pattern.png">
                             </div>
-                            <div class="row card-text">
-                                <p>this is a virtual card design using HTML and CSS. You can aslo design something like
-                                    this.</p>
-                            </div>
-                            <div class="row signature">
-                                <p>CUSTOMER SIGNATURE</p>
-                                <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="80px">
-                            </div>
+                            <p>{{debitCard.cvv}}</p>
+                        </div>
+                        <div class="row card-text">
+                            <p>this is a virtual card design using HTML and CSS. You can aslo design something like
+                                this.</p>
+                        </div>
+                        <div class="row signature">
+                            <p>CUSTOMER SIGNATURE</p>
+                            <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="80px">
                         </div>
                     </div>
                 </div>
-                <div v-else>
-                    <h3> Aún no tienes tarjetas de débito</h3>
-                 </div>
-    
             </div>
-        
-   
-      
+            <div v-else>
+                <h3> Aún no tienes tarjetas de débito</h3>
+            </div>
+
+        </div>
+
+
+
 
     </main>
 </body>

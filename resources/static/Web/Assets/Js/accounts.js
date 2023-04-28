@@ -4,7 +4,7 @@ const app = createApp({
   data() {
     return {
       clients: [],
-      id: (new URLSearchParams(location.search)).get("id")
+      createdAccount: false
     };
   },
   created() {
@@ -12,7 +12,7 @@ const app = createApp({
   },
   methods: {
            getClientInfo() {
-             axios.get("http://localhost:8080/api/clients/current")
+             axios.get("/api/clients/current")
              .then(response => {
              this.clients = response.data;
               console.log(this.clients);
@@ -21,6 +21,22 @@ const app = createApp({
         logout() {
           axios.post('/api/logout')
               .then(() => window.location.href = "/Web/index.html")
+      },
+      createAccount(){
+        axios.post('/api/clients/current/accounts')
+        .then(response => {
+            if (response.status == "201") {
+                console.log(response),
+                    this.createdAccount = true
+                    this.getClientInfo()
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            if (error.code == "ERR_BAD_REQUEST") {
+                console.log(error)
+            }
+        })
       }
        }
     })
