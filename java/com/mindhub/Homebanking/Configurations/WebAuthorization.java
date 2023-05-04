@@ -20,15 +20,17 @@ class WebAuthorization {
    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/manager.html/**").hasAuthority("ADMIN")
+                .antMatchers("/manager.html").hasAuthority("ADMIN")
                 //.antMatchers("/api/clients/**").hasAnyAuthority("CLIENT","ADMIN")
-                .antMatchers("/rest/**").hasAnyAuthority("ADMIN")
+                .antMatchers("/rest/**").hasAuthority("ADMIN")
                 .antMatchers("/h2-console").hasAnyAuthority("ADMIN")
-                .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html/**").permitAll()
+                .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html", "/Web/BigWing/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**").hasAuthority("CLIENT")
-                .antMatchers(HttpMethod.GET, "/api/clients/current").hasAnyAuthority("CLIENT")
-                .antMatchers("/Web/accounts.html/**","/Web/account.html/**", "/Web/cards.html/**","/Web/createCard.html/**", "/api/accounts/**").hasAuthority("CLIENT")
+                .antMatchers(HttpMethod.POST ,"/api/login", "/api/logout").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**").hasAuthority("CLIENT")
+                .antMatchers( "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/accounts/{id}").hasAuthority("CLIENT")
+                .antMatchers("/api/clients/current").hasAnyAuthority("CLIENT")
+                .antMatchers("/Web/**").hasAuthority("CLIENT")
                 .antMatchers("/**").hasAuthority("CLIENT")
                 .antMatchers("/**").hasAnyAuthority("ADMIN");
 
@@ -68,13 +70,9 @@ class WebAuthorization {
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {
-
         HttpSession session = request.getSession(false);
-
         if (session != null) {
-
             session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-
         }
 
     }

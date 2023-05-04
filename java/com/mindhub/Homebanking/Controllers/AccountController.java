@@ -46,7 +46,7 @@ public class AccountController {
         String accountNumber = "VIN" + String.format("%08d", randomNumber);
 
         Client client = clientRepository.findByEmail(authentication.getName());
-        if (client.getAccounts().size() > 2) {
+        if (client.getAccounts().size() >= 3) {
             return new ResponseEntity<>("Already Have 3 accounts", HttpStatus.FORBIDDEN);
         };
         Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00);
@@ -55,7 +55,5 @@ public class AccountController {
         clientRepository.save(client);
         return new ResponseEntity<>( HttpStatus.CREATED);
     }
-
-
 }
 

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./Assets/Estilos/style.css">
     <title>Document</title>
 </head>
-<body>
+<body id="app">
     <nav>
         <img src="./Assets/Imágenes/Mindhub Brothers.gif" alt="" class="logo">
   
@@ -21,13 +21,13 @@
           <a href="" @click="logout">Cerrar Sesión</a>
         </div>
       </nav>
-    <main id="app">
+    <main>
         <form @submit.prevent="createCard" class="d-flex flex-column">
             <label for="cardType">Card Type: </label>
             <select v-model="cardType" id="cardType" class="form-select" required>
                 <option value="" selected disabled>Select</option>
-                <option value="credito">Credit</option>
-                <option value="debito">Debit</option>
+                <option value="credito" v-show="creditCards.length<3">Credit</option>
+                <option value="debito" v-show="debitCards.length<3">Debit</option>
             </select>
             <label for="cardColor">Card Color: </label>
             <select v-model="cardColor" id="cardColor" class="form-select" required>

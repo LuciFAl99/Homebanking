@@ -8,8 +8,7 @@ const app = createApp({
             creditCards: [],
             isNewCard: false,
             cardType: "",
-            cardColor: "",
-            id: (new URLSearchParams(location.search)).get("id")
+            cardColor: ""
         }
     },
     created() {

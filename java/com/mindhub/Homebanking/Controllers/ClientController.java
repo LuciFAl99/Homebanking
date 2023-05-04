@@ -43,7 +43,7 @@ public class ClientController {
     }
 
     @GetMapping("api/clients/current")
-    public ClientDto getAll(Authentication authentication) {
+    public ClientDto getCurrentClient(Authentication authentication) {
         return new ClientDto(clientRepository.findByEmail(authentication.getName()));
     }
 
@@ -57,11 +57,19 @@ public class ClientController {
 
             @RequestParam String email, @RequestParam String password) {
 
-        if (firstName.isBlank() || lastName.isBlank() || email.isBlank() || password.isBlank()) {
+            if (firstName.isBlank()){
+                return new ResponseEntity<>("First name is required", HttpStatus.FORBIDDEN);
+            } else if (lastName.isBlank()) {
+                return new ResponseEntity<>("Last name is required", HttpStatus.FORBIDDEN);
+            } else if (email.isBlank()) {
+                return new ResponseEntity<>("email is required", HttpStatus.FORBIDDEN);
+            } else if (password.isBlank()){
+                return new ResponseEntity<>("password is required", HttpStatus.FORBIDDEN);
+            } else if (password.length() < 8){
+                return new ResponseEntity<>("La contraseña debe tener al menos 8 caracteres", HttpStatus.FORBIDDEN);
+            }
 
-            return new ResponseEntity<>("Te faltó algún dato", HttpStatus.FORBIDDEN);
 
-        }
 
 
         if (clientRepository.findByEmail(email) !=  null) {

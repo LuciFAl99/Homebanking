@@ -12,7 +12,8 @@ const app = createApp({
             errorLogin:false,
             confirmPassword:"",
             errorPassCreate:false,
-            errorMessage: ''
+            errorMessage: '',
+            errorEmailCreate:false
         }
     },
     methods: {
@@ -32,6 +33,7 @@ const app = createApp({
           },
 
         register() {
+            
             axios.post('/api/clients', "firstName=" + this.firstName + "&lastName=" + this.lastName + "&email=" + this.postEmail + "&password=" + this.postPassword, { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
                 
                 .then(() => {
@@ -41,7 +43,7 @@ const app = createApp({
 
                 })
                 .catch(err => {
-                  if (err.response && err.response.status === 409) {
+                  if (this.postEmail == this.email) {
                     this.errorMessage = 'El correo electrónico ya existe';
                   } else {
                     console.error(err);
