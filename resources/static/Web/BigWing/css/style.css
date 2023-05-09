@@ -2,10 +2,14 @@ body {
   font-family: "Poppins", sans-serif;
   color: #0c0c0c;
   background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+
 .layout_padding {
-  padding: 75px 0;
+  padding: 55px 0;
 }
 
 .layout_padding2 {
@@ -45,7 +49,7 @@ body {
 
 /*header section*/
 .hero_area {
-  height: 94vh;
+  height: 100vh;
   background: -webkit-gradient(linear, left top, right top, from(#864ddf), to(#203376));
   background: linear-gradient(to right, #864ddf, #203376);
 }
@@ -74,9 +78,7 @@ body {
   height: auto;
 }
 
-.header_section {
-  padding-top: 15px;
-}
+
 
 .header_section .container-fluid {
   padding-right: 25px;
@@ -92,17 +94,31 @@ body {
   color: #f9fcfb;
   text-align: center;
   text-transform: uppercase;
+  border-radius: 25px;
 }
 
-a,
-a:hover,
-a:focus {
-  text-decoration: none;
+.custom_nav-container.navbar-expand-lg .navbar-nav .nav-link:hover{
+  color: black;
+}
+.custom_nav-container.navbar-expand-lg .navbar-nav .nav-link:hover{
+  background-color:#feb543;
+}
+.login{
+  margin-left: 25rem;
+  background-color: #9852f2;
+  border-radius: 25px;
+}
+.registro{
+  background-color: #9852f2;
+  border-radius: 25px;
+  margin-left: 2rem;
 }
 
-a:hover,
-a:focus {
-  color: initial;
+.custom_nav-container.navbar-expand-lg .navbar-nav .nav-link2{
+  color: #864ddf;
+  text-align: center;
+  text-transform: uppercase;
+  padding: 10px 30px;
 }
 
 .btn,
@@ -118,6 +134,13 @@ a:focus {
   font-weight: bold;
   font-size: 24px;
   color: #fafcfd;
+}
+.navbar-brand2,
+.navbar-brand2:hover{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 24px;
+  color: #864ddf;
 }
 
 .custom_nav-container .nav_search-btn {
@@ -612,6 +635,9 @@ a:focus {
   -webkit-transform: translateY(-7px);
           transform: translateY(-7px);
 }
+.maxAmount{
+  background-color: rgb(70, 167, 70);
+}
 
 /* info section */
 .footer_bg {
@@ -619,6 +645,19 @@ a:focus {
   background-size: cover;
   padding-top: 280px;
   margin-top: -125px;
+}
+.footer_bg2{
+  background-image: url(../images/footer-bg.png);
+  background-size: cover;
+  padding-top: 90px;
+  margin-top: -135px;
+}
+.logo {
+  width: 100px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 20px;
+ 
 }
 
 .info_section {

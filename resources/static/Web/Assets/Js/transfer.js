@@ -3,8 +3,6 @@ const { createApp } = Vue
 let app = createApp({
     data() {
         return{
-            
-            url : "http://localhost:8080/api/clients/current",
             clientes : [],
             accounts: [],
             accountsExcludingO: [],
@@ -14,29 +12,18 @@ let app = createApp({
             amount: null,
             description: '',
             accountThirdD: '',
-
-
-
         }
     },
     mounted(){
-
         this.loadData()
-
     },
-
-    methods:{
+     methods:{
         loadData() {
-            axios.get(this.url)
-
+            axios.get("http://localhost:8080/api/clients/current")
             .then((data) => {
-
                 this.clientes = data.data
                 this.accounts = this.clientes.accounts
-
-                
-
-
+                console.log(this.clientes);
             })
             .catch((error) => {
 
@@ -61,9 +48,7 @@ let app = createApp({
             .then(() => window.location.href = "/Web/accounts.html")
             .catch((error) => Swal.fire({
                 icon: 'error',
-                
                 text: 'Algo anduvo mal!',
-                
               }))
            
         },

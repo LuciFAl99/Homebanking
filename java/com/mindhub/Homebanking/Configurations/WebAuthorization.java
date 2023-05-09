@@ -19,20 +19,18 @@ class WebAuthorization {
    @Bean
    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .antMatchers("/manager.html").hasAuthority("ADMIN")
-                //.antMatchers("/api/clients/**").hasAnyAuthority("CLIENT","ADMIN")
-                .antMatchers("/rest/**").hasAuthority("ADMIN")
-                .antMatchers("/h2-console").hasAnyAuthority("ADMIN")
-                .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html", "/Web/BigWing/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
-                .antMatchers(HttpMethod.POST ,"/api/login", "/api/logout").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**").hasAuthority("CLIENT")
-                .antMatchers( "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/accounts/{id}").hasAuthority("CLIENT")
-                .antMatchers("/api/clients/current").hasAnyAuthority("CLIENT")
-                .antMatchers("/Web/**").hasAuthority("CLIENT")
-                .antMatchers("/**").hasAuthority("CLIENT")
-                .antMatchers("/**").hasAnyAuthority("ADMIN");
+       http.authorizeRequests()
+               .antMatchers("/manager.html").hasAuthority("ADMIN")
+               .antMatchers("/rest/**").hasAnyAuthority("ADMIN", "CLIENT")
+               .antMatchers("/h2-console/**").hasAnyAuthority("ADMIN")
+               .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html", "/Web/BigWing/**").permitAll()
+               .antMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
+               .antMatchers(HttpMethod.POST ,"/api/login", "/api/logout").permitAll()
+               .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current/loans/**",  "/api/loans/**").hasAuthority("CLIENT")
+               .antMatchers( "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current", "/api/clients/current/loans/**", "/api/loans/**").hasAuthority("CLIENT")
+               .antMatchers("/Web/**").hasAuthority("CLIENT")
+               .antMatchers("/api/accounts/{id}").hasAnyAuthority("CLIENT", "ADMIN")
+               .anyRequest().authenticated();
 
 
 

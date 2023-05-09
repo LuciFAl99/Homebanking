@@ -5,8 +5,8 @@ package com.mindhub.Homebanking.Controllers;
 import com.mindhub.Homebanking.Dtos.ClientDto;
 import com.mindhub.Homebanking.Models.Account;
 import com.mindhub.Homebanking.Models.Client;
-import com.mindhub.Homebanking.Repositories.AccountRepository;
-import com.mindhub.Homebanking.Repositories.ClientRepository;
+import com.mindhub.Homebanking.Services.AccountService;
+import com.mindhub.Homebanking.Services.ClientService;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,32 +19,29 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
-import static java.util.stream.Collectors.toList;
 
 
 @RestController
 public class ClientController {
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @RequestMapping("/api/clients")
     public List<ClientDto> getClients() {
-        return clientRepository.findAll().stream().map(client -> new ClientDto(client)).collect(toList());
+        return clientService.getClients();
     }
 
     @RequestMapping("/api/clients/{id}")
     public ClientDto getClient(@PathVariable Long id) {
-        return clientRepository.findById(id)
-                .map(client -> new ClientDto(client))
-                .orElse(null);
+        return clientService.getClient(id);
     }
 
     @GetMapping("api/clients/current")
     public ClientDto getCurrentClient(Authentication authentication) {
-        return new ClientDto(clientRepository.findByEmail(authentication.getName()));
+        return clientService.getCurrentClient(authentication);
     }
 
     @Autowired
@@ -70,9 +67,7 @@ public class ClientController {
             }
 
 
-
-
-        if (clientRepository.findByEmail(email) !=  null) {
+        if (clientService.findByEmail(email) !=  null) {
 
             return new ResponseEntity<>("El email esta en uso", HttpStatus.FORBIDDEN);
 
@@ -83,9 +78,9 @@ public class ClientController {
 
         Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
         Account newAccount = new Account (accountNumber, LocalDateTime.now(), 0.00);
-        clientRepository.save(newClient);
+        clientService.saveClient(newClient);
         newClient.addAccount(newAccount);
-        accountRepository.save(newAccount);
+        accountService.saveAccount(newAccount);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

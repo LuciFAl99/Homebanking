@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>BigWing</title>
+
+    <!-- slider stylesheet -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="./BigWing/css/bootstrap.css" />
+
+    <!-- fonts style -->
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,500|Poppins:400,700&amp;display=swap"
+        rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="./BigWing/css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="./BigWing/css/responsive.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div id="app">
+        <section class="welcome_section layout_padding">
+
+
+        </section>
+        <div class="footer_bg2">
+            <!-- info section -->
+            <section class="info_section layout_padding2-bottom">
+
+                <div class="container">
+
+                    <div>
+                        <h2 class="text-center">Solicitar préstamo</h2>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-6 col-lg-4 rounded border p-2">
+                                <form @submit.prevent>
+                                    <p>Tipo de préstamo:</p>
+                                    <select class="form-control" v-model="selectedLoan" name="selectedLoan"
+                                        @change="loadPayments" required>
+                                        <option value="" selected disabled>select</option>
+                                        <option v-for="loan in loans" :value="loan.id">{{ loan.name }}</option>
+                                    </select>
+                                    <p v-if="selectedLoan" class="mt-2 maxAmount rounded d-flex justify-content-center">
+                                        Monto máximo: {{getMaxAmount(selectedLoan)}}</p>
+                                    <p>Cuotas:</p>
+                                    <select class="form-control" v-model="selectedPayment" name="selectedPayment">
+                                        <option>Selecciona las cuotas</option>
+                                        <option v-for="payment of filteredPayments" :value="payment">{{payment}}</option>
+                                    </select>
+                                    <p>Monto del préstamo:</p>
+                                    <input type="number" name="" id="" class="form-control" v-model="amount">
+                                    <p>Cuenta destino:</p>
+                                    <select class="form-control" v-model="selectAccount">
+                                        <option>Selecciona la cuenta con la que solicitarás el préstamo</option>
+                                        <option :value="account.number" v-for="account of accounts">{{account.number}}
+                                        </option>
+                                    </select>
+                                    <div class="d-flex justify-content-center p-3">
+                                        <button class="btn border rounded" v-on:click="surePopUp()">Transferir</button>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        <div
+                            class="d-flex flex-column flex-lg-row justify-content-between align-items-center align-items-lg-baseline">
+                            <div class="social-box">
+                                <a href="">
+                                    <img src="images/fb.png" alt="" />
+                                </a>
+
+                                <a href="">
+                                    <img src="images/twitter.png" alt="" />
+                                </a>
+                                <a href="">
+                                    <img src="images/linkedin1.png" alt="" />
+                                </a>
+                                <a href="">
+                                    <img src="images/instagram1.png" alt="" />
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+
+            </section>
+
+            <!-- end info_section -->
+
+            <!-- footer section -->
+            <section class="container-fluid footer_section">
+                <p>
+                    © 2019 Todos los derechos reservados
+
+                </p>
+            </section>
+            <!-- footer section -->
+        </div>
+    </div>
+    <!-- welcome section -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./Assets/Js/loanApplication.js"></script>
+    <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+
+
+
+</body>
+
+</html>

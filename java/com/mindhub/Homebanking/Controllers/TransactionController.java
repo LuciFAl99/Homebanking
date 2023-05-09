@@ -3,9 +3,9 @@ package com.mindhub.Homebanking.Controllers;
 import com.mindhub.Homebanking.Models.Account;
 import com.mindhub.Homebanking.Models.Transaction;
 import com.mindhub.Homebanking.Models.TransactionType;
-import com.mindhub.Homebanking.Repositories.AccountRepository;
-import com.mindhub.Homebanking.Repositories.ClientRepository;
-import com.mindhub.Homebanking.Repositories.TransactionRepository;
+import com.mindhub.Homebanking.Services.AccountService;
+import com.mindhub.Homebanking.Services.ClientService;
+import com.mindhub.Homebanking.Services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Transactional
 @RestController
 public class TransactionController {
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientService clientService;
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
 
     @PostMapping("/api/clients/current/transactions")
@@ -35,8 +33,8 @@ public class TransactionController {
             Authentication authentication, @RequestParam double amount, @RequestParam String description,
             @RequestParam String accountOriginNumber, @RequestParam String destinationAccountNumber) {
 
-        Account originAccount = accountRepository.findByNumber(accountOriginNumber.toUpperCase());
-        Account destinationAccount = accountRepository.findByNumber(destinationAccountNumber.toUpperCase());
+        Account originAccount = accountService.findByNumber(accountOriginNumber.toUpperCase());
+        Account destinationAccount = accountService.findByNumber(destinationAccountNumber.toUpperCase());
 
         //Verificar que los parámetros no estén en blanco
         StringBuilder errorMessage = new StringBuilder();
@@ -93,16 +91,16 @@ public class TransactionController {
         originAccount.addTransaction(debitTransaction);
         originAccount.addTransaction(creditTransaction);
 
-        transactionRepository.save(debitTransaction);
-        transactionRepository.save(creditTransaction);
+        transactionService.saveTransaction(debitTransaction);
+        transactionService.saveTransaction(creditTransaction);
 
         //Actualizar cuentas con los montos correspondientes
         originAccount.setBalance(originAccount.getBalance() - amount);
         destinationAccount.setBalance(destinationAccount.getBalance() + amount);
 
         //Guardar cuentas actualizadas a través del repositorio de cuentas
-        accountRepository.save(originAccount);
-        accountRepository.save(destinationAccount);
+        accountService.saveAccount(originAccount);
+        accountService.saveAccount(destinationAccount);
 
         return new ResponseEntity<>("Transacción exitosa", HttpStatus.CREATED);
     }

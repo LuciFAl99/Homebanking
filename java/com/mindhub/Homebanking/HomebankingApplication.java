@@ -90,14 +90,16 @@ public class HomebankingApplication {
 			accountRepository.save(account4);
 			accountRepository.save(account5);
 
+
+
 			Loan loan1 = new Loan("Hipotecario", 500000, new ArrayList<>(Arrays.asList(12, 24, 36, 48, 60)));
 			Loan loan2 = new Loan("Personal", 100000, new ArrayList<>(Arrays.asList(6, 12, 24)));
 			Loan loan3 = new Loan("Automotriz", 300000, new ArrayList<>(Arrays.asList(6, 12, 24, 36)));
 
-			ClientLoan clientLoan1 = new ClientLoan(400000, 60);
-			ClientLoan clientLoan2 = new ClientLoan(50000, 12);
-			ClientLoan clientLoan3 = new ClientLoan(100000, 24);
-			ClientLoan clientLoan4 = new ClientLoan(200000, 36);
+			ClientLoan clientLoan1 = new ClientLoan(400000, 60, 5896);
+			ClientLoan clientLoan2 = new ClientLoan(50000, 12, 6589);
+			ClientLoan clientLoan3 = new ClientLoan(100000, 24, 6589);
+			ClientLoan clientLoan4 = new ClientLoan(200000, 36, 3659);
 
 			client1.addClientLoan(clientLoan1);
 			client1.addClientLoan(clientLoan2);

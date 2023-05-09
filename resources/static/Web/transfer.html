@@ -33,17 +33,14 @@
                         <input type="radio" v-model="radioTransfer" value="Own" id="option-one-type" name="selector">
                         <label for="option-one-type" class="form1">Cuenta propia</label>
                         <input type="radio" v-model="radioTransfer" value="Third" id="option-two-type" name="selector">
-                        <label for="option-two-type" class="form1">Otra Cuenta</label>
-                        <input type="radio" v-model="radioType" id="option-three-type" name="selector">                           
+                        <label for="option-two-type" class="form1">Otra Cuenta</label>                        
                    </div>
                 </form>
                 <h5 class="text-center textColor2 container">Seleccionar cuenta desde la que harás la transferencia</h5>
                 <form class="d-flex justify-content-center container">
                     <div class="radio-group p-0" v-for="account of accounts">
                          <input type="radio" v-model="selectAccount" :value="account.number" :id="account.number" name="selector">
-                         <label :for="account.number" class="form1">{{account.number}} <span class="fw-bold">Balance:</span>  {{account.balance}}</label>
-                         
-                                                 
+                         <label :for="account.number" class="form1">{{account.number}} <span class="fw-bold">Balance:</span>  {{account.balance}}</label>                           
                     </div>
                     <div>
                         

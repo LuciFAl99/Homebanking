@@ -38,7 +38,8 @@ const app = createApp({
                 
                 .then(() => {
 
-                    axios.post('/api/login', "email=" + this.postEmail + "&password=" + this.postPassword, { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
+                    axios.post('/api/login', "email=" + this.postEmail + "&password=" + this.postPassword,
+                     { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
                         .then(() => window.location.href = "/Web/accounts.html")
 
                 })
