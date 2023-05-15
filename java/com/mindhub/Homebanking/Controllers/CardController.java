@@ -8,6 +8,7 @@ import com.mindhub.Homebanking.Repositories.CardRepository;
 import com.mindhub.Homebanking.Repositories.ClientRepository;
 import com.mindhub.Homebanking.Services.CardService;
 import com.mindhub.Homebanking.Services.ClientService;
+import com.mindhub.Homebanking.Utils.CardUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,35 +34,28 @@ public class CardController {
 
     @PostMapping("/api/clients/current/cards")
     public ResponseEntity<Object> createCard(Authentication authentication, @RequestParam CardType type, @RequestParam CardColor color) {
-        Random random = new Random();
-        int cardCvv = random.nextInt(899) + 100;
-        String cardNumber = "";
-        for (int i = 0; i < 16; i++) {
-            if (i > 0 && i % 4 == 0) {
-                cardNumber += " ";
-            }
-            cardNumber += (int) (Math.random() * 10);
-        }
+
 
         Client client = clientService.findByEmail(authentication.getName());
 
         if (client.getCards().stream().filter(e -> e.getType().toString().equals(type.toString())).count() >= 3) {
             return new ResponseEntity<>("403 Ya tiene 3 tarjetas de ese tipo", HttpStatus.FORBIDDEN);
         }
-        Set<Card> cards = client.getCards().stream().filter(card -> card.getType()== type).collect(Collectors.toSet());
-        if(cards.stream().anyMatch(card -> card.getColor()== color)){
+        Set<Card> cards = client.getCards().stream().filter(card -> card.getType() == type).collect(Collectors.toSet());
+        if (cards.stream().anyMatch(card -> card.getColor() == color)) {
             return new ResponseEntity<>("Ya tienes una tarjeta de ese tipo", HttpStatus.FORBIDDEN);
         }
 
+        String cardNumber = CardUtils.getCardNumber();
+        int cvv = CardUtils.getCVV();
 
-
-
-
-        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cardCvv, LocalDate.now(), LocalDate.now().plusYears(5));
+        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, LocalDate.now(), LocalDate.now().plusYears(5));
         cardService.saveCard(cardGenerated);
         client.addCard(cardGenerated);
         clientService.saveClient(client);
         return new ResponseEntity<>("Tarjeta creada con éxito", HttpStatus.CREATED);
 
     }
+
+
 }

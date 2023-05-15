@@ -29,12 +29,12 @@ public class ClientController {
     @Autowired
     private AccountService accountService;
 
-    @RequestMapping("/api/clients")
+    @GetMapping("/api/clients")
     public List<ClientDto> getClients() {
         return clientService.getClients();
     }
 
-    @RequestMapping("/api/clients/{id}")
+    @GetMapping("/api/clients/{id}")
     public ClientDto getClient(@PathVariable Long id) {
         return clientService.getClient(id);
     }

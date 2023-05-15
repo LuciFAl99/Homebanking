@@ -84,4 +84,10 @@ public class Account {
         transaction.setAccount(this);
         transactions.add(transaction);
     }
+
+    public void deposit(int i) {
+    }
+
+    public void withdraw(int i) {
+    }
 }

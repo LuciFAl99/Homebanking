@@ -23,6 +23,7 @@ class WebAuthorization {
                .antMatchers("/manager.html").hasAuthority("ADMIN")
                .antMatchers("/rest/**").hasAnyAuthority("ADMIN", "CLIENT")
                .antMatchers("/h2-console/**").hasAnyAuthority("ADMIN")
+               .antMatchers("/api/clients", "/api/accounts").hasAuthority("ADMIN")
                .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html", "/Web/BigWing/**").permitAll()
                .antMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
                .antMatchers(HttpMethod.POST ,"/api/login", "/api/logout").permitAll()

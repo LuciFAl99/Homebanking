@@ -63,7 +63,10 @@ footer{
     background-color: #0068a2;
     height: 15vh;
 }
-
+.tarjeta{
+    display: flex;
+    justify-content: center;
+}
 .container {
     min-height: 100vh;
     width: 100%;
