@@ -3,7 +3,6 @@ package com.mindhub.Homebanking.Models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +23,9 @@ public class Loan {
 
 
     public Loan() {
+    }
+
+    public Loan(String name, double maxAmount, List<Integer> payments, double interest) {
     }
 
     public Loan(String name, double maxAmount, List<Integer> payments) {

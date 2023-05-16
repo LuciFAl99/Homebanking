@@ -77,7 +77,7 @@ public class ClientController {
         String accountNumber = "VIN" + String.format("%08d", randomNumber);
 
         Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
-        Account newAccount = new Account (accountNumber, LocalDateTime.now(), 0.00);
+        Account newAccount = new Account (accountNumber, LocalDateTime.now(), 0.00, true);
         clientService.saveClient(newClient);
         newClient.addAccount(newAccount);
         accountService.saveAccount(newAccount);

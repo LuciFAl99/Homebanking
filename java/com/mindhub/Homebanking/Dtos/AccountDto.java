@@ -11,6 +11,7 @@ public class AccountDto {
     private String number;
     private LocalDateTime creationDate;
     private double balance;
+    private boolean active;
     private List<TransactionDto> transactions;
 
 
@@ -24,6 +25,7 @@ public class AccountDto {
         this.transactions = account.getTransaction()
                 .stream()
                 .map(transaction -> new TransactionDto(transaction)).collect(Collectors.toList());
+        this.active = account.isActive();
     }
 
     public long getId() {
@@ -46,4 +48,7 @@ public class AccountDto {
         return transactions;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 }

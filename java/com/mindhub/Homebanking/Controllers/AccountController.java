@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -49,11 +50,38 @@ public class AccountController {
         if (client.getAccounts().size() >= 3) {
             return new ResponseEntity<>("Already Have 3 accounts", HttpStatus.FORBIDDEN);
         };
-        Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00);
+        Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00, true);
         accountService.saveAccount(accountGenerated);
         client.addAccount(accountGenerated);
         clientService.saveClient(client);
         return new ResponseEntity<>( HttpStatus.CREATED);
+
+    }
+    @PutMapping("/api/clients/current/accounts")
+    public ResponseEntity<Object> deleteAccount (
+            Authentication authentication , @RequestParam long id){
+
+        Client client = clientService.findByEmail(authentication.getName());
+        Account account = accountService.findById(id);
+
+        if( account == null ){
+            return new ResponseEntity<>("Esta cuenta no existe", HttpStatus.FORBIDDEN);
+        } else if ( !account.isActive() ){
+            return new ResponseEntity<>("Esta cuenta esta inactiva", HttpStatus.FORBIDDEN);
+        } else if( account.getBalance() > 0 ){
+            return new ResponseEntity<>("No puedes eliminar esta cuenta porque tiene dinero", HttpStatus.FORBIDDEN);
+        }
+
+        if (client == null) {
+            return new ResponseEntity<>("No eres un cliente", HttpStatus.FORBIDDEN);
+        }else if( client.getAccounts().stream().filter(account1 -> account1.getId() == id).collect(toList()).size() == 0 ){
+            return new ResponseEntity<>("Esta cuenta no te pertenece", HttpStatus.FORBIDDEN);}
+
+        account.setActive(false);
+        account.getTransactions().stream().forEach( transaction -> transaction.setActive(false));
+        accountService.saveAccount(account);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
 

@@ -9,7 +9,7 @@ const app = createApp({
       isNewCard: false,
       cardType: "",
       cardColor: "",
-      deletedCardNumbers: [] 
+      deletedCardNumbers: []
     }
   },
   created() {
@@ -22,16 +22,11 @@ const app = createApp({
         .then(response => {
           this.cards = response.data.cards;
           console.log(this.cards);
-          this.debitCards = this.cards.filter(card => card.type == "DEBITO");
+          this.debitCards = this.cards.filter(card => card.type == "DEBITO" && card.active);
           console.log(this.debitCards);
-          this.creditCards = this.cards.filter(card => card.type == "CREDITO");
+          this.creditCards = this.cards.filter(card => card.type == "CREDITO" && card.active);
           console.log(this.creditCards);
           console.log(this.cardType);
-
-          const deletedCardNumbers = JSON.parse(localStorage.getItem('deletedCardNumbers')) || [];
-          this.cards = this.cards.filter(card => !deletedCardNumbers.includes(card.number));
-          this.debitCards = this.debitCards.filter(card => !deletedCardNumbers.includes(card.number));
-          this.creditCards = this.creditCards.filter(card => !deletedCardNumbers.includes(card.number));
 
         })
     },
@@ -55,24 +50,32 @@ const app = createApp({
         .then(() => window.location.href = "/Web/cards.html")
         .catch(() => swal('No puedes crear mas tarjetas'))
     },
-    eliminarTarjeta(numeroTarjeta) {
-      axios
-        .patch('/api/clients/current/cards/delete', `number=${numeroTarjeta}`)
-        .then(() => {
-          this.cards = this.cards.filter(card => card.number !== numeroTarjeta);
-          this.debitCards = this.debitCards.filter(card => card.number !== numeroTarjeta);
-          this.creditCards = this.creditCards.filter(card => card.number !== numeroTarjeta);
-          console.log(this.cards);
-          console.log(this.debitCards);
-          console.log(this.creditCards);
+    eliminarTarjeta(id) {
+      Swal.fire({
+        title: '¿Estás seguro de que quieres eliminar esta tarjeta?',
+        text: "La acción no se podrá revertir",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        preConfirm: () => {
+          return axios.put('/api/clients/current/cards', `id=${id}`)
+            .then((response) => Swal.fire({
+              icon: 'success',
+              text: 'La tarjeta se eliminó correctamente',
 
-          const deletedCardNumbers = JSON.parse(localStorage.getItem('deletedCardNumbers')) || [];
-          deletedCardNumbers.push(numeroTarjeta);
-          localStorage.setItem('deletedCardNumbers', JSON.stringify(deletedCardNumbers));
-        })
-        .catch((error) => {
-          this.errorCard = true;
-        });
+            }
+            ))
+            .then(response => {
+              window.location.href = "/Web/cards.html"
+            })
+            .catch(error => {
+              Swal.showValidationMessage(
+                `Request failed: ${error.response.data}`
+              )
+            })
+        }
+      })
     }
 
 

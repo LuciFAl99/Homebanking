@@ -1,11 +1,9 @@
 package com.mindhub.Homebanking.Controllers;
 
-import com.mindhub.Homebanking.Models.Card;
-import com.mindhub.Homebanking.Models.CardColor;
-import com.mindhub.Homebanking.Models.CardType;
-import com.mindhub.Homebanking.Models.Client;
+import com.mindhub.Homebanking.Models.*;
 import com.mindhub.Homebanking.Repositories.CardRepository;
 import com.mindhub.Homebanking.Repositories.ClientRepository;
+import com.mindhub.Homebanking.Services.AccountService;
 import com.mindhub.Homebanking.Services.CardService;
 import com.mindhub.Homebanking.Services.ClientService;
 import com.mindhub.Homebanking.Utils.CardUtils;
@@ -47,7 +45,7 @@ public class CardController {
         String cardNumber = CardUtils.getCardNumber();
         int cvv = CardUtils.getCVV();
 
-        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, LocalDate.now(), LocalDate.now().plusYears(5));
+        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, LocalDate.now(), LocalDate.now().plusYears(5), true);
         cardService.saveCard(cardGenerated);
         client.addCard(cardGenerated);
         clientService.saveClient(client);
@@ -55,10 +53,24 @@ public class CardController {
 
     }
 
-    @PatchMapping("/api/clients/current/cards/delete")
-    public ResponseEntity<Object> deleteAccount(@RequestParam String number) {
-        Card deletedCard = cardService.findByNumber(number);
-        cardService.saveCard(deletedCard);
-        return new ResponseEntity<>("Card deleted", HttpStatus.OK);
+    @PutMapping("/api/clients/current/cards")
+    public ResponseEntity<Object> deleteCard (
+            Authentication authentication , @RequestParam Long id){
+
+        Client client = clientService.findByEmail(authentication.getName());
+        Card card = cardService.getById(id);
+
+        if(card == null){
+            return new ResponseEntity<>("Esta tarjeta no existe", HttpStatus.FORBIDDEN);
+        } else if ( !card.isActive() ){
+            return new ResponseEntity<>("Esta tarjeta está inactiva", HttpStatus.FORBIDDEN);}
+        if (client == null) {
+            return new ResponseEntity<>("No eres un cliente registrado", HttpStatus.FORBIDDEN);
+        }else if( client.getCards().stream().filter(card1 -> card1.getId() == id).collect(toList()).size() == 0 ){
+            return new ResponseEntity<>("Esta tarjeta no te pertenece", HttpStatus.FORBIDDEN);}
+        card.setActive(false);
+        cardService.saveCard(card);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
 }

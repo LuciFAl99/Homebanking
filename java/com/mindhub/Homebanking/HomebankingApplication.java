@@ -36,18 +36,18 @@ public class HomebankingApplication {
 			Client client3 = new Client("Maria", "Gonzalez", "maria@mindhub.com", passwordEncoder.encode("Maria123"));
             Client admin = new Client ("Admin", "admin", "admin@admin.com", passwordEncoder.encode("admin"));
 
-			Account account1 = new Account("VIN001", now, 5000);
-			Account account2 = new Account("VIN002", tomorrow, 7500);
-			Account account3 = new Account("VIN003", now, 7700);
-			Account account4 = new Account("VIN004", tomorrow, 87700);
-			Account account5 = new Account("VIN005", now, 9876);
+			Account account1 = new Account("VIN001", now, 5000, true);
+			Account account2 = new Account("VIN002", tomorrow, 7500, true);
+			Account account3 = new Account("VIN003", now, 7700, true);
+			Account account4 = new Account("VIN004", tomorrow, 5869, true);
+			Account account5 = new Account("VIN005", now, 9876, true);
 
-			Transaction transaction1 = new Transaction(TransactionType.DEBITO, -2223, "TransacciónPrimera", tomorrow);
-			Transaction transaction2 = new Transaction(TransactionType.CREDITO, 4576, "Transacción", tomorrow);
-			Transaction transaction3 = new Transaction(TransactionType.DEBITO, -690576, "TransacciónUltima", now);
-			Transaction transaction4 = new Transaction(TransactionType.CREDITO, 7876, "Transacción4", tomorrow);
-			Transaction transaction5 = new Transaction(TransactionType.DEBITO, -3476, "Transacción5", tomorrow);
-			Transaction transaction6 = new Transaction(TransactionType.DEBITO, -6576, "Transacción6", now);
+			Transaction transaction1 = new Transaction(TransactionType.DEBITO, -2223, "TransacciónPrimera", tomorrow, true);
+			Transaction transaction2 = new Transaction(TransactionType.CREDITO, 4576, "Transacción", tomorrow, true);
+			Transaction transaction3 = new Transaction(TransactionType.DEBITO, -690576, "TransacciónUltima", now, true);
+			Transaction transaction4 = new Transaction(TransactionType.CREDITO, 7876, "Transacción4", tomorrow, true);
+			Transaction transaction5 = new Transaction(TransactionType.DEBITO, -3476, "Transacción5", tomorrow, true);
+			Transaction transaction6 = new Transaction(TransactionType.DEBITO, -6576, "Transacción6", now, true);
 
 			repository.save(client1);
 			repository.save(client2);
@@ -123,10 +123,10 @@ public class HomebankingApplication {
 			LocalDate thru = LocalDate.now().plusYears(5);
 			LocalDate from = LocalDate.now();
 
-			Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4567 3986 0987 6738", 564, thru, from);
-			Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "1653 2345 0987 1435", 698, thru, from);
-			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(), CardType.CREDITO, CardColor.SILVER, "6789 4567 3214 7654", 765, thru, from);
-			Card card4 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.SILVER, "6574 8934 6543 2345", 857, thru, from);
+			Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4567 3986 0987 6738", 564, thru, from, true);
+			Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "1653 2345 0987 1435", 698, thru, from, true);
+			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(), CardType.CREDITO, CardColor.SILVER, "6789 4567 3214 7654", 765, thru, from, true);
+			Card card4 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.SILVER, "6574 8934 6543 2345", 857, thru, from, true);
 
 			client1.addCard(card1);
 			client1.addCard(card2);

@@ -11,6 +11,7 @@ public class TransactionDto {
     private double amount;
     private String description;
     private LocalDateTime date;
+    private boolean active;
 
     public TransactionDto() {
     }
@@ -21,6 +22,7 @@ public class TransactionDto {
         this.amount = transaction.getAmount();
         this.description = transaction.getDescription();
         this.date = transaction.getDate();
+        this.active = transaction.isActive();
     }
 
 
@@ -44,6 +46,9 @@ public class TransactionDto {
         return date;
     }
 
+    public boolean isActive() {
+        return active;
+    }
 }
 
 

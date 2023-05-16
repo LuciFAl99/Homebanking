@@ -1,5 +1,6 @@
 package com.mindhub.Homebanking.Controllers;
 
+
 import com.mindhub.Homebanking.Dtos.LoanApplicationDto;
 import com.mindhub.Homebanking.Dtos.LoanDto;
 import com.mindhub.Homebanking.Models.*;
@@ -109,7 +110,7 @@ public class LoanController {
         clientLoanService.saveClientLoan(clientLoan);
 
         //Creo la transaccion y la guardo
-        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, loanApplicationDto.getAmount(),loanApplicationDto.getLoanId()+"crédito aprobado", LocalDateTime.now());
+        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, loanApplicationDto.getAmount(),loanApplicationDto.getLoanId()+"crédito aprobado", LocalDateTime.now(), true);
         transactionService.saveTransaction(creditTransaction);
 
         //Le asigno la transaccion a la cuenta de destino, le agrego el balance y la guardo
@@ -118,7 +119,13 @@ public class LoanController {
         accountService.saveAccount(account);
 
         return  new ResponseEntity<>("Create", HttpStatus.CREATED);
+    }
+    @PostMapping("/api/admin/loan")
+    public ResponseEntity<Object> newLoanAdmin(@RequestBody Loan loan) {
 
+        Loan newLoan = new Loan(loan.getName(), loan.getMaxAmount() , loan.getPayments());
+        loanService.saveLoan(newLoan);
 
+        return new ResponseEntity<>("Préstamo creado con éxito", HttpStatus.CREATED);
     }
 }

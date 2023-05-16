@@ -48,7 +48,7 @@ public class TransactionController {
             errorMessage.append("La cuenta de destino es requerida\n");
         }
         if (amount == 0.0 || Double.isNaN(amount)) {
-            errorMessage.append("Amount es requerido y debe ser un número válido\n");
+            errorMessage.append("Monto es requerido y debe ser un número válido\n");
         }
 
         if (errorMessage.length() > 0) {
@@ -82,11 +82,18 @@ public class TransactionController {
 
         //Verificar que la cuenta de origen tenga el monto disponible
         if (originAccount.getBalance() < amount) {
-            return new ResponseEntity<>("La cuenta de origen no tiene fondos suficientes", HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>("No posees fondos suficientes para realizar esta transacción", HttpStatus.FORBIDDEN);
         }
 
-        Transaction debitTransaction = new Transaction(TransactionType.DEBITO, -amount, accountOriginNumber + " " + description, LocalDateTime.now());
-        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, amount, destinationAccountNumber + " " + description, LocalDateTime.now());
+        if(!originAccount.isActive()){
+            return new ResponseEntity<>("Esta cuenta está inactiva, no puedes transferir dinero", HttpStatus.FORBIDDEN);
+        }
+        if(!destinationAccount.isActive()){
+            return new ResponseEntity<>("La cuenta destino está inactiva", HttpStatus.FORBIDDEN);
+        }
+
+        Transaction debitTransaction = new Transaction(TransactionType.DEBITO, -amount, accountOriginNumber + " " + description, LocalDateTime.now(), true);
+        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, amount, destinationAccountNumber + " " + description, LocalDateTime.now(), true);
 
         originAccount.addTransaction(debitTransaction);
         originAccount.addTransaction(creditTransaction);

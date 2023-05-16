@@ -7,6 +7,10 @@ const app = createApp({
       firstName: "",
       lastName: "",
       email:"",
+      loanName: "",
+      maxAmount: 0,
+      paymentsText: ""
+    
     }
   },
   created(){
@@ -46,10 +50,34 @@ const app = createApp({
          this.email = "";
        })
        .catch(error => console.log(error));
-    }
-    
+    },
+    createLoan() {
+      const payments = this.paymentsText.split(",").map(payment => parseInt(payment.trim()));
+      
+      const loan = {
+        name: this.loanName,
+        maxAmount: this.maxAmount,
+        payments: payments
+      };
+      
+      axios.post("/api/admin/loan", loan)
+      .then((response) => Swal.fire({
+        icon: 'success',
+        text: 'El préstamo se realizó correctamente',
 
-  },
+      }
+
+      ))
+      .catch((error) => {
+        console.log(error.response.data)
+        Swal.fire({
+          icon: 'error',
+          text: error.response.data,
+          confirmButtonColor: "#7c601893",
+        })
+      })
+    }
+}
  
 })
 

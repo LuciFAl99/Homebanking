@@ -48,7 +48,8 @@ let app = createApp({
             .then(() => window.location.href = "/Web/accounts.html")
             .catch((error) => Swal.fire({
                 icon: 'error',
-                text: 'Algo anduvo mal!',
+                text: error.response.data,
+                confirmButtonColor: "#7c601893",
               }))
            
         },

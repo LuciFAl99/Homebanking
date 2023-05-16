@@ -83,7 +83,8 @@ let app = createApp({
           console.log(error.response.data)
           Swal.fire({
             icon: 'error',
-            text: 'Algo anduvo mal!',
+            text: error.response.data,
+            confirmButtonColor: "#7c601893",
           })
         })
 
