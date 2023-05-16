@@ -23,8 +23,8 @@ public class HomebankingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(HomebankingApplication.class, args);
-	}}
-	/*@Autowired
+	}
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	@Bean
 	public CommandLineRunner initData(ClientRepository repository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository, CardRepository cardRepository){
@@ -96,10 +96,10 @@ public class HomebankingApplication {
 			Loan loan2 = new Loan("Personal", 100000, new ArrayList<>(Arrays.asList(6, 12, 24)));
 			Loan loan3 = new Loan("Automotriz", 300000, new ArrayList<>(Arrays.asList(6, 12, 24, 36)));
 
-			ClientLoan clientLoan1 = new ClientLoan(400000, 60, 5896);
-			ClientLoan clientLoan2 = new ClientLoan(50000, 12, 6589);
-			ClientLoan clientLoan3 = new ClientLoan(100000, 24, 6589);
-			ClientLoan clientLoan4 = new ClientLoan(200000, 36, 3659);
+			ClientLoan clientLoan1 = new ClientLoan(400000, 60);
+			ClientLoan clientLoan2 = new ClientLoan(50000, 12);
+			ClientLoan clientLoan3 = new ClientLoan(100000, 24);
+			ClientLoan clientLoan4 = new ClientLoan(200000, 36);
 
 			client1.addClientLoan(clientLoan1);
 			client1.addClientLoan(clientLoan2);
@@ -140,6 +140,6 @@ public class HomebankingApplication {
 
 		};
 	}
-}*/
+}
 
 

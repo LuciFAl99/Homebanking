@@ -61,4 +61,5 @@ public class CardDto {
     public LocalDate getFromDate() {
         return fromDate;
     }
+
 }

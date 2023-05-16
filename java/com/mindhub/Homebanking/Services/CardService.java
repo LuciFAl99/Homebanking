@@ -4,4 +4,7 @@ import com.mindhub.Homebanking.Models.Card;
 
 public interface CardService {
     void saveCard(Card card);
+    Card getById(Long id);
+    Card findByNumber(String number);
+
 }

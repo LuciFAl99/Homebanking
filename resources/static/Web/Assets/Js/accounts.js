@@ -23,7 +23,7 @@ const app = createApp({
               .then(() => window.location.href = "/Web/BigWing/index.html")
       },
       calculateAmountWithoutInterest(amount) {
-        return amount / 1.2;
+        return amount / 1.20;
       },
       createAccount(){
         axios.post('/api/clients/current/accounts')

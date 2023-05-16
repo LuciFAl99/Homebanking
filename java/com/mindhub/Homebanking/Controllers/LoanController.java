@@ -102,9 +102,7 @@ public class LoanController {
 
 
         //Creo el prestamo del cliente le sumo el 20% y lo guardo
-        double totalInterest = loanApplicationDto.getAmount() * 1.20;
-        double interest = totalInterest / loanApplicationDto.getPayments();
-        ClientLoan clientLoan = new ClientLoan(loanApplicationDto.getAmount(),loanApplicationDto.getPayments(), interest);
+        ClientLoan clientLoan = new ClientLoan(loanApplicationDto.getAmount(),loanApplicationDto.getPayments());
         clientLoan.setClient(client);
         clientLoan.setLoan(loan);
         clientLoan.setAmount(clientLoan.getAmount()*1.20);

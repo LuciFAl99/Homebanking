@@ -13,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -57,5 +55,10 @@ public class CardController {
 
     }
 
-
+    @PatchMapping("/api/clients/current/cards/delete")
+    public ResponseEntity<Object> deleteAccount(@RequestParam String number) {
+        Card deletedCard = cardService.findByNumber(number);
+        cardService.saveCard(deletedCard);
+        return new ResponseEntity<>("Card deleted", HttpStatus.OK);
+    }
 }
