@@ -13,6 +13,7 @@ import java.util.List;
 public class TransactionPDF {
     private Account account;
     private List<Transaction> listTransactions;
+    private static final String LOGO_PATH = "E:\\Descargas\\Homebanking\\src\\main\\resources\\static\\Web\\Assets\\Imágenes\\logo.png"; // Ruta del archivo de imagen del logo
 
     public TransactionPDF(List<Transaction> listTransactions, Account account) {
         this.listTransactions = listTransactions;
@@ -59,6 +60,13 @@ public class TransactionPDF {
         Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
         Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
         Font detailsFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
+
+        //Logo
+        Image logo = Image.getInstance(LOGO_PATH);
+        logo.scaleToFit(200, 200);
+        logo.setAlignment(Image.ALIGN_LEFT);
+
+        doc.add(logo);
 
         // Título
         Paragraph title = new Paragraph("Lista de Transacciones", titleFont);
