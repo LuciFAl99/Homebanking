@@ -26,16 +26,16 @@ public class TransactionPDF {
 
         Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
 
-        cell.setPhrase(new Phrase("Date", font));
+        cell.setPhrase(new Phrase("Fecha", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Description", font));
+        cell.setPhrase(new Phrase("Descrición", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Transaction Type", font));
+        cell.setPhrase(new Phrase("Tipo de transacción", font));
         table.addCell(cell);
 
-        cell.setPhrase(new Phrase("Amount", font));
+        cell.setPhrase(new Phrase("Monto", font));
         table.addCell(cell);
     }
 
@@ -61,17 +61,17 @@ public class TransactionPDF {
         Font detailsFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
 
         // Título
-        Paragraph title = new Paragraph("List of Transactions", titleFont);
+        Paragraph title = new Paragraph("Lista de Transacciones", titleFont);
         title.setAlignment(Paragraph.ALIGN_CENTER);
         title.setSpacingAfter(10);
         doc.add(title);
 
         // Información de la cuenta
-        Paragraph accountInfo = new Paragraph("Account Information", headerFont);
+        Paragraph accountInfo = new Paragraph("Información de la cuenta", headerFont);
         accountInfo.setAlignment(Paragraph.ALIGN_LEFT);
         doc.add(accountInfo);
 
-        doc.add(new Paragraph("Account Number: " + account.getNumber(), detailsFont));
+        doc.add(new Paragraph("Número de cuenta: " + account.getNumber(), detailsFont));
         doc.add(new Paragraph("Balance: " + account.getBalance(), detailsFont));
 
         LocalDateTime fechaCreacion = account.getCreationDate(); // Reemplaza esto con la fecha de creación real
