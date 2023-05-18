@@ -12,142 +12,136 @@
 <body id="app">
     <nav class="d-flex justify-content-between">
         <img src="./Assets/Imágenes/logo.png" alt="" class="logo">
-
+    
         <div>
-            <a href="./accounts.html" class="active">Cuentas</a>
-            <a href="./cards.html">Tarjetas</a>
+            <a href="./accounts.html">Cuentas</a>
+            <a href="./cards.html" class="active">Tarjetas</a>
             <a href="./transfer.html">Transferencias</a>
             <a href="" @click="logout">Cerrar Sesion</a>
         </div>
     </nav>
     <section class="welcome_section layout_padding">
 
-
     </section>
-    <div class="footer_bg2">
+    <div class="service_section">
         <!-- info section -->
         <section class="info_section layout_padding2-bottom">
             <a href="./createCard.html" class="tarjeta">Crear Tarjeta</a>
-                
-            </div>
             <div class="container">
-                <main>
-                    <div class="container">
-                        <h2>Tarjetas de crédito</h2>
+                <main class="container2">
+                    <div class="container tarjeta-wrapper">
+                        <h2>Tarjetas de Crédito</h2>
                         <div class="card" v-if="creditCards.length !=0" v-for="creditCard of creditCards">
-                            <div class="card-inner">
-                                <div class="front">
-                                    <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                                    <div class="row">
-                                        <img src="https://i.ibb.co/G9pDnYJ/chip.png" width="60px">
-                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="60px">
-                                    </div>
-                                    <div class="row card-no">
-                                        <p>{{creditCard.number}}</p>
-                                    </div>
-                                    <div class="row card-holder">
-                                        <p>Titular de la tarjeta</p>
-                                        <p>Fecha de validez</p>
-                                    </div>
-                                    <div class="row name">
-                                        <p>{{creditCard.cardholder}}</p>
-                                        <p>{{creditCard.thruDate}}</p>
+                            <div class="card__front card__part"  :class="creditCard.color">
+                                <img class="card__front-square card__square"
+                                    src="https://image.ibb.co/cZeFjx/little_square.png">
+                                <img class="card__front-logo card__logo"
+                                    src="https://www.fireeye.com/partners/strategic-technology-partners/visa-fireeye-cyber-watch-program/_jcr_content/content-par/grid_20_80_full/grid-20-left/image.img.png/1505254557388.png">
+                                <p class="card_numer">{{creditCard.number}}</p>
+                                <div class="card__space-75">
+                                    <span class="card__label">Titular de la Tarjeta</span>
+                                    <p class="card__info">{{creditCard.cardholder}}</p>
+                                    <div class="card" :class="{ 'expired-card': isExpired(creditCard.thruDate) }">
+                                        <template v-if="isExpired(creditCard.thruDate)">
+                                            <div class="expired">Tarjeta vencida</div>
+                                        </template>
                                     </div>
                                 </div>
-                                <div class="back">
-                                    <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                                    <div class="bar"></div>
-                                    <div class="row card-cvv">
-                                        <div>
-                                            <img src="https://i.ibb.co/S6JG8px/pattern.png">
-                                        </div>
-                                        <p>{{creditCard.cvv}}</p>
-                                    </div>
-                                    <div class="row card-text">
-                                        <p>this is a virtual card design using HTML and CSS. You can aslo design something like
-                                            this.</p>
-                                    </div>
-                                    <div class="row signature">
-                                        <p>CUSTOMER SIGNATURE</p>
-                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="80px">
-                                    </div>
-                                    
+                                <div class="card__space-25">
+                                    <span class="card__label">Vencimiento</span>
+                                    <p class="card__info">{{ formatThruDate(creditCard.thruDate) }}</p>
                                 </div>
                             </div>
-                            <button @click="eliminarTarjeta(creditCard.id)">Eliminar Tarjeta</button>
+                            <div class="card__back card__part" :class="creditCard.color">
+                                <div class="card__black-line"></div>
+                                <div class="card__back-content">
+                                    <div class="card__secret">
+                                        <p class="card__secret--last">{{creditCard.cvv}}</p>
+                                    </div>
+                                    <img class="card__back-square card__square"
+                                        src="https://image.ibb.co/cZeFjx/little_square.png">
+                                    <img class="card__back-logo card__logo"
+                                        src="https://www.fireeye.com/partners/strategic-technology-partners/visa-fireeye-cyber-watch-program/_jcr_content/content-par/grid_20_80_full/grid-20-left/image.img.png/1505254557388.png">
 
+                                </div>
+                            </div>
+                            <button @click="eliminarTarjeta(creditCard.id)" class="boton">Eliminar Tarjeta</button>
+                        </div>
+                        <div v-else>
+                            <h3> Aún no tienes tarjetas de crédito</h3>
+                        </div>
+
+                    </div>
+     
+                    <div class="container debito tarjeta-wrapper">
+                        <h2>Tarjetas de Débito</h2>
+                        <div class="card" v-if="debitCards.length !=0" v-for="debitCard of debitCards" >
+                            <div>
+                                <div class="card__front card__part" :class="debitCard.color">
+                                    <img class="card__front-square card__square"
+                                        src="https://image.ibb.co/cZeFjx/little_square.png">
+                                    <img class="card__front-logo card__logo"
+                                        src="https://www.fireeye.com/partners/strategic-technology-partners/visa-fireeye-cyber-watch-program/_jcr_content/content-par/grid_20_80_full/grid-20-left/image.img.png/1505254557388.png">
+                                    <p class="card_numer">{{debitCard.number}}</p>
+                                    <div class="card__space-75">
+                                        <span class="card__label">Titular de la Tarjeta</span>
+                                        <p class="card__info">{{debitCard.cardholder}}</p>
+                                        <div class="card" :class="{ 'expired-card': isExpired(debitCard.thruDate) }">
+                                            <template v-if="isExpired(debitCard.thruDate)">
+                                                <div class="expired">Tarjeta vencida</div>
+                                            </template>
+                                        </div> 
+                                    </div>
+                                    <div class="card__space-25">
+                                        <span class="card__label">Vencimiento</span>
+                                        <p class="card__info">{{ formatThruDate(debitCard.thruDate) }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="card__back card__part" :class="debitCard.color">
+                                    <div class="card__black-line"></div>
+                                    <div class="card__back-content">
+                                        <div class="card__secret">
+                                            <p class="card__secret--last">{{debitCard.cvv}}</p>
+                                        </div>
+                                        <img class="card__back-square card__square"
+                                            src="https://image.ibb.co/cZeFjx/little_square.png">
+                                        <img class="card__back-logo card__logo"
+                                            src="https://www.fireeye.com/partners/strategic-technology-partners/visa-fireeye-cyber-watch-program/_jcr_content/content-par/grid_20_80_full/grid-20-left/image.img.png/1505254557388.png">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button @click="eliminarTarjeta(debitCard.id)">Eliminar Tarjeta</button>
                         </div>
                         <div v-else>
                             <h3> Aún no tienes tarjetas de crédito</h3>
                         </div>
                     </div>
-                    <div class="container debit">
-                        <h2>Tarjetas de Debito</h2>
-                        <div class="card" v-if="debitCards.length !=0" v-for="debitCard of debitCards">
-                            <div class="card-inner">
-                                <div class="front">
-                                    <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                                    <div class="row">
-                                        <img src="https://i.ibb.co/G9pDnYJ/chip.png" width="60px">
-                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="60px">
-                                    </div>
-                                    <div class="row card-no">
-                                        <p>{{debitCard.number}}</p>
-                                    </div>
-                                    <div class="row card-holder">
-                                        <p>Titular de la tarjeta</p>
-                                        <p>Fecha de validez</p>
-                                    </div>
-                                    <div class="row name">
-                                        <p>{{debitCard.cardholder}}</p>
-                                        <p>{{debitCard.thruDate}}</p>
-                                    </div>
-                                </div>
-                                <div class="back">
-                                    <img src="https://i.ibb.co/PYss3yv/map.png" class="map-img">
-                                    <div class="bar"></div>
-                                    <div class="row card-cvv">
-                                        <div>
-                                            <img src="https://i.ibb.co/S6JG8px/pattern.png">
-                                        </div>
-                                        <p>{{debitCard.cvv}}</p>
-                                    </div>
-                                    <div class="row card-text">
-                                        <p>this is a virtual card design using HTML and CSS. You can aslo design something like
-                                            this.</p>
-                                    </div>
-                                    <div class="row signature">
-                                        <p>CUSTOMER SIGNATURE</p>
-                                        <img src="https://i.ibb.co/WHZ3nRJ/visa.png" width="80px">
-                                    </div>
-                                </div>
-                            </div>
-                            <button @click="eliminarTarjeta(debitCard.id)">Eliminar Tarjeta</button>
 
-                        </div>
-                        <div v-else>
-                            <h3> Aún no tienes tarjetas de débito</h3>
-                        </div>
-            
-                    </div>
-            
-            
-            
-            
                 </main>
             </div>
-
         </section>
+    </div>
 
-        <!-- end info_section -->
 
-        <!-- footer section -->
-        <section class="container-fluid footer_section">
-            <p>
-                © 2019 Todos los derechos reservados
 
-            </p>
-        </section>
+
+
+    </div>
+
+    </section>
+
+    <!-- end info_section -->
+
+    <!-- footer section -->
+    <section class="container-fluid footer_section">
+        <p>
+            © 2019 Todos los derechos reservados
+
+        </p>
+    </section>
 
 
 

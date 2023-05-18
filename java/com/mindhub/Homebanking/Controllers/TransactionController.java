@@ -1,8 +1,7 @@
 package com.mindhub.Homebanking.Controllers;
 
-import com.mindhub.Homebanking.Models.Account;
-import com.mindhub.Homebanking.Models.Transaction;
-import com.mindhub.Homebanking.Models.TransactionType;
+import com.itextpdf.text.DocumentException;
+import com.mindhub.Homebanking.Models.*;
 import com.mindhub.Homebanking.Services.AccountService;
 import com.mindhub.Homebanking.Services.ClientService;
 import com.mindhub.Homebanking.Services.TransactionService;
@@ -14,8 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Transactional
 @RestController
@@ -82,13 +85,13 @@ public class TransactionController {
 
         //Verificar que la cuenta de origen tenga el monto disponible
         if (originAccount.getBalance() < amount) {
-                return new ResponseEntity<>("No posees fondos suficientes para realizar esta transacción", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("No posees fondos suficientes para realizar esta transacción", HttpStatus.FORBIDDEN);
         }
 
-        if(!originAccount.isActive()){
+        if (!originAccount.isActive()) {
             return new ResponseEntity<>("Esta cuenta está inactiva, no puedes transferir dinero", HttpStatus.FORBIDDEN);
         }
-        if(!destinationAccount.isActive()){
+        if (!destinationAccount.isActive()) {
             return new ResponseEntity<>("La cuenta destino está inactiva", HttpStatus.FORBIDDEN);
         }
 
@@ -110,5 +113,49 @@ public class TransactionController {
         accountService.saveAccount(destinationAccount);
 
         return new ResponseEntity<>("Transacción exitosa", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/api/clients/current/export-pdf")
+    public ResponseEntity<Object> ExportingToPDF(HttpServletResponse response, Authentication authentication, @RequestParam String accNumber, @RequestParam String dateIni, @RequestParam String dateEnd) throws DocumentException, IOException {
+
+        Client client = clientService.findByEmail(authentication.getName());
+        Account account = accountService.findByNumber(accNumber);
+
+        if (client == null) {
+            return new ResponseEntity<>("No eres un cliente", HttpStatus.FORBIDDEN);
+        }
+
+        if (account == null) {
+            return new ResponseEntity<>("No existe el número de cuenta", HttpStatus.FORBIDDEN);
+        }
+
+        if (client.getAccounts()
+                .stream()
+                .noneMatch(account1 -> account1.getNumber().equals(account.getNumber()))) {
+            return new ResponseEntity<>("Esta cuenta no te pertenece", HttpStatus.FORBIDDEN);
+        }
+
+        if (dateIni.isBlank()) {
+            return new ResponseEntity<>("La fecha de inicio no puede estar vacía", HttpStatus.FORBIDDEN);
+        } else if (dateEnd.isBlank()) {
+            return new ResponseEntity<>("La fecha de fin no puede estar vacía", HttpStatus.FORBIDDEN);
+        }
+
+        response.setContentType("application/pdf");
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=Transactions" + accNumber + ".pdf";
+        response.setHeader(headerKey, headerValue);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime dateTimeIni = LocalDateTime.parse(dateIni, formatter);
+        LocalDateTime dateTimeEnd = LocalDateTime.parse(dateEnd, formatter);
+
+        List<Transaction> listTransactions = transactionService.findByCreatedBetweenDates(client, accNumber, dateTimeIni, dateTimeEnd);
+
+        TransactionPDF exporter = new TransactionPDF(listTransactions, account);
+        exporter.usePDFExport(response); // Genera el archivo PDF y envíalo como respuesta
+
+        return new ResponseEntity<>("PDF creado con éxito", HttpStatus.CREATED);
     }
 }

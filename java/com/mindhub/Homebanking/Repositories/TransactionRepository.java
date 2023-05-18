@@ -12,6 +12,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     List<Transaction> findByDate(LocalDateTime date);
-
     List<Transaction> findByType(TransactionType debito);
 }

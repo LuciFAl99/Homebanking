@@ -9,7 +9,7 @@ const app = createApp({
       isNewCard: false,
       cardType: "",
       cardColor: "",
-      deletedCardNumbers: []
+      deletedCardNumbers: [],
     }
   },
   created() {
@@ -27,6 +27,8 @@ const app = createApp({
           this.creditCards = this.cards.filter(card => card.type == "CREDITO" && card.active);
           console.log(this.creditCards);
           console.log(this.cardType);
+   
+
 
         })
     },
@@ -74,12 +76,24 @@ const app = createApp({
                 `Request failed: ${error.response.data}`
               )
             })
-        }
+        },
+      
       })
-    }
+    },
+    isExpired(date) {
+      // Lógica para comprobar si la tarjeta está expirada
+      const currentDate = new Date();
+      const expirationDate = new Date(date);
+      return expirationDate < currentDate;
+    },
+    formatThruDate(thruDate) {
+      const date = new Date(thruDate);
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear().toString().slice(2);
+      return `${month}/${year}`;
+    },
 
-
-  }
+}
 });
 
 app.mount("#app");

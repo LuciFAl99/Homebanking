@@ -45,7 +45,12 @@ public class CardController {
         String cardNumber = CardUtils.getCardNumber();
         int cvv = CardUtils.getCVV();
 
-        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, LocalDate.now(), LocalDate.now().plusYears(5), true);
+        LocalDate fromDate = LocalDate.now();
+        LocalDate thruDate = fromDate.plusYears(5);
+        boolean active = true;
+        boolean expired = (thruDate.isBefore(LocalDate.now()) || !active);
+
+        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, thruDate, fromDate, active, expired);        cardService.saveCard(cardGenerated);
         cardService.saveCard(cardGenerated);
         client.addCard(cardGenerated);
         clientService.saveClient(client);

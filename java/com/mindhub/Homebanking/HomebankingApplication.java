@@ -123,20 +123,22 @@ public class HomebankingApplication {
 			LocalDate thru = LocalDate.now().plusYears(5);
 			LocalDate from = LocalDate.now();
 
-			Card card1 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4567 3986 0987 6738", 564, thru, from, true);
-			Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "1653 2345 0987 1435", 698, thru, from, true);
-			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(), CardType.CREDITO, CardColor.SILVER, "6789 4567 3214 7654", 765, thru, from, true);
-			Card card4 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.SILVER, "6574 8934 6543 2345", 857, thru, from, true);
-
+			Card card1 = new Card(client1.getFirstName() + " " + client1.getLastName(), CardType.DEBITO, CardColor.GOLD, "4567 3986 0987 6738", 564, thru, from, true, false);
+			Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "1653 2345 0987 1435", 698, thru, from, true, false);
+			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(), CardType.CREDITO, CardColor.SILVER, "6789 4567 3214 7654", 765, thru, from, true, false);
+			Card card4 = new Card(client1.getFirstName()+" "+client1.getLastName(), CardType.DEBITO, CardColor.SILVER, "6574 8934 6543 2345", 857, thru, from, true, false);
+			Card card5 = new Card(client3.getFirstName()+" "+client3.getLastName(), CardType.CREDITO, CardColor.TITANIUM, "4569 3625 1235 4568", 546, LocalDate.now().minusYears(5), from, true, true);
 			client1.addCard(card1);
 			client1.addCard(card2);
 			client2.addCard(card3);
 			client1.addCard(card4);
+			client3.addCard(card5);
 
 			cardRepository.save(card1);
 			cardRepository.save(card2);
 			cardRepository.save(card3);
 			cardRepository.save(card4);
+			cardRepository.save(card5);
 
 		};
 	}

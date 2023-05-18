@@ -28,6 +28,7 @@ class WebAuthorization {
                .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html", "/Web/BigWing/**").permitAll()
                .antMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
                .antMatchers(HttpMethod.POST ,"/api/login", "/api/logout").permitAll()
+               .antMatchers(HttpMethod.POST, "/api/clients/current/export-pdf").hasAuthority("CLIENT")
                .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current/loans/**",  "/api/loans/**").hasAnyAuthority("CLIENT", "ADMIN")
                .antMatchers(HttpMethod.PUT, "/api/clients/current/cards", "/api/clients/current/accounts/delete").hasAuthority("CLIENT")
                .antMatchers( "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current", "/api/clients/current/loans/**", "/api/loans/**").hasAuthority("CLIENT")

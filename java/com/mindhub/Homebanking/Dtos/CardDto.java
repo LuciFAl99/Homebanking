@@ -17,6 +17,7 @@ public class CardDto {
     private LocalDate fromDate;
     private boolean active;
 
+    private boolean expired;
     public CardDto() {
     }
 
@@ -30,6 +31,7 @@ public class CardDto {
         this.thruDate = card.getThruDate();
         this.fromDate = card.getFromDate();
         this.active = card.isActive();
+        this.expired = card.isExpired();
     }
 
     public Long getId() {
@@ -66,5 +68,9 @@ public class CardDto {
 
     public boolean isActive() {
         return active;
+    }
+
+    public boolean isExpired() {
+        return expired;
     }
 }

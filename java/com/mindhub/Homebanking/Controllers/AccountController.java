@@ -54,7 +54,7 @@ public class AccountController {
         accountService.saveAccount(accountGenerated);
         client.addAccount(accountGenerated);
         clientService.saveClient(client);
-        return new ResponseEntity<>( HttpStatus.CREATED);
+        return new ResponseEntity<>( "Cuenta creada con éxito",HttpStatus.CREATED);
 
     }
     @PutMapping("/api/clients/current/accounts")
