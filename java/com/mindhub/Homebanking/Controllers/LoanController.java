@@ -6,6 +6,7 @@ import com.mindhub.Homebanking.Dtos.LoanDto;
 import com.mindhub.Homebanking.Models.*;
 import com.mindhub.Homebanking.Repositories.*;
 import com.mindhub.Homebanking.Services.*;
+import com.mindhub.Homebanking.Utils.LoanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mindhub.Homebanking.Utils.LoanUtils.getPayments;
+import static com.mindhub.Homebanking.Utils.LoanUtils.getRoundedAmount;
 import static java.util.stream.Collectors.toList;
 
 @Transactional
@@ -161,8 +164,8 @@ public class LoanController {
             return new ResponseEntity<>("No solicitaste este préstamo", HttpStatus.FORBIDDEN);
         }
 
-        int payments = (int) Math.ceil(clientLoan.get().getFinalAmount() / clientLoan.get().getPayments());
-        int roundedAmount = (int) Math.ceil(amount);
+        int payments = LoanUtils.getPayments(clientLoan);
+        int roundedAmount = LoanUtils.getRoundedAmount(amount);
         if (roundedAmount != payments) {
             return new ResponseEntity<>("Monto incorrecto de la cuota, debes pagar "+ payments, HttpStatus.FORBIDDEN);
         }
@@ -189,5 +192,7 @@ public class LoanController {
         }
         return new ResponseEntity<>("Pago efectuado correctamente", HttpStatus.CREATED);
     }
+
+
 
 }

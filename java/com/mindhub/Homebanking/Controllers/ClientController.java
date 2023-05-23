@@ -8,6 +8,7 @@ import com.mindhub.Homebanking.Models.AccountType;
 import com.mindhub.Homebanking.Models.Client;
 import com.mindhub.Homebanking.Services.AccountService;
 import com.mindhub.Homebanking.Services.ClientService;
+import com.mindhub.Homebanking.Utils.ClientUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import static com.mindhub.Homebanking.Utils.ClientUtils.getAccountNumber;
+import static com.mindhub.Homebanking.Utils.ClientUtils.getRandomNumber;
 
 
 @RestController
@@ -73,9 +76,8 @@ public class ClientController {
             return new ResponseEntity<>("El email esta en uso", HttpStatus.FORBIDDEN);
 
         }
-        Random random = new Random();
-        int randomNumber = random.nextInt(99999999);
-        String accountNumber = "VIN" + String.format("%08d", randomNumber);
+        int randomNumber = ClientUtils.getRandomNumber();
+        String accountNumber = ClientUtils.getAccountNumber(randomNumber);
 
         Client newClient = new Client(firstName, lastName, email, passwordEncoder.encode(password));
         Account newAccount = new Account (accountNumber, LocalDateTime.now(), 0.00, true, AccountType.AHORRO);
@@ -84,6 +86,5 @@ public class ClientController {
         accountService.saveAccount(newAccount);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
 }

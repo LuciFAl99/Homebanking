@@ -9,6 +9,7 @@ import com.mindhub.Homebanking.Repositories.AccountRepository;
 import com.mindhub.Homebanking.Repositories.ClientRepository;
 import com.mindhub.Homebanking.Services.AccountService;
 import com.mindhub.Homebanking.Services.ClientService;
+import com.mindhub.Homebanking.Utils.AccountUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.mindhub.Homebanking.Utils.AccountUtils.getAccountNumber;
+import static com.mindhub.Homebanking.Utils.AccountUtils.getRandomNumber;
 import static java.util.stream.Collectors.toList;
 
 
@@ -43,9 +46,8 @@ public class AccountController {
 
     @PostMapping("/api/clients/current/accounts")
     public ResponseEntity<Object> createAccount(Authentication authentication, @RequestParam String accountType) {
-        Random random = new Random();
-        int randomNumber = random.nextInt(99999999);
-        String accountNumber = "VIN" + String.format("%08d", randomNumber);
+        int randomNumber = AccountUtils.getRandomNumber();
+        String accountNumber = AccountUtils.getAccountNumber(randomNumber);
 
         Client client = clientService.findByEmail(authentication.getName());
         List<Account> accountsActive = client.getAccounts().stream().filter(account -> account.isActive()).collect(Collectors.toList());
@@ -64,6 +66,7 @@ public class AccountController {
         return new ResponseEntity<>( "Cuenta creada con éxito",HttpStatus.CREATED);
 
     }
+
     @PutMapping("/api/clients/current/accounts")
     public ResponseEntity<Object> deleteAccount (
             Authentication authentication , @RequestParam long id){

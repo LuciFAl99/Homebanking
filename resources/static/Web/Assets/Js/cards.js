@@ -62,7 +62,7 @@ const app = createApp({
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes',
+        confirmButtonText: 'Sí',
         preConfirm: () => {
           return axios.put('/api/clients/current/cards', `id=${id}`)
             .then((response) => Swal.fire({
