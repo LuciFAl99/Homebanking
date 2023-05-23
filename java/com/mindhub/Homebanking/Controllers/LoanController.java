@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 @Transactional
 @RestController
@@ -57,6 +60,7 @@ public class LoanController {
         if (loanApplicationDto.getLoanId() == 0) {
             errorMessage.append("El tipo de préstamo es requerido\n");
         }
+
 
         if (errorMessage.length() > 0) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorMessage.toString());
@@ -101,16 +105,14 @@ public class LoanController {
             return new ResponseEntity<>("La cuenta destino no pertenece al cliente autenticado", HttpStatus.FORBIDDEN);
         }
 
-
-        //Creo el prestamo del cliente le sumo el 20% y lo guardo
-        ClientLoan clientLoan = new ClientLoan(loanApplicationDto.getAmount(),loanApplicationDto.getPayments());
+        ClientLoan clientLoan = new ClientLoan(loanApplicationDto.getAmount(),loanApplicationDto.getAmount()*loan.getInterest(),loanApplicationDto.getPayments(), loanApplicationDto.getPayments());
         clientLoan.setClient(client);
         clientLoan.setLoan(loan);
-        clientLoan.setAmount(clientLoan.getAmount()*1.20);
         clientLoanService.saveClientLoan(clientLoan);
 
         //Creo la transaccion y la guardo
-        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, loanApplicationDto.getAmount(),loanApplicationDto.getLoanId()+"crédito aprobado", LocalDateTime.now(), true);
+        Double initialBalanceclientAcc = account.getBalance() + loanApplicationDto.getAmount();
+        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, loanApplicationDto.getAmount(),loanApplicationDto.getLoanId()+"crédito aprobado", LocalDateTime.now(),initialBalanceclientAcc, true);
         transactionService.saveTransaction(creditTransaction);
 
         //Le asigno la transaccion a la cuenta de destino, le agrego el balance y la guardo
@@ -123,9 +125,69 @@ public class LoanController {
     @PostMapping("/api/admin/loan")
     public ResponseEntity<Object> newLoanAdmin(@RequestBody Loan loan) {
 
-        Loan newLoan = new Loan(loan.getName(), loan.getMaxAmount() , loan.getPayments());
+        Loan newLoan = new Loan(loan.getName(), loan.getMaxAmount() , loan.getPayments(), loan.getInterest());
         loanService.saveLoan(newLoan);
 
         return new ResponseEntity<>("Préstamo creado con éxito", HttpStatus.CREATED);
     }
+
+    @Transactional
+    @PostMapping("/api/current/loans")
+    public ResponseEntity<Object> payLoan(Authentication authentication , @RequestParam long idLoan , @RequestParam String account, @RequestParam double amount) {
+
+        Client client = clientService.findByEmail(authentication.getName());
+        Optional<ClientLoan> clientLoan = clientLoanService.findById(idLoan);
+        Account accountAuthenticated = accountService.findByNumber(account);
+        String description = "Pago de préstamo " + clientLoan.get().getLoan().getName();
+
+        if( clientLoan == null ){
+            return new ResponseEntity<>("Este préstamo no existe", HttpStatus.FORBIDDEN);
+        } else if( client == null){
+            return new ResponseEntity<>("No estás registrado", HttpStatus.FORBIDDEN);}
+        else if( clientLoan.get().getPayments() == 0 ){
+            return new ResponseEntity<>("Este préstamo ya fue pagado", HttpStatus.FORBIDDEN);
+        }
+        if (account.isBlank()) {
+            return new ResponseEntity<>("Por favor ingresa una cuenta. ", HttpStatus.FORBIDDEN);
+        } else {
+            if (accountAuthenticated == null) {
+                return new ResponseEntity<>("Esta cuenta no existe. ", HttpStatus.FORBIDDEN);
+            } else if (!client.getAccounts().contains(accountAuthenticated)) {
+                return new ResponseEntity<>("Esta cuenta no te pertenece. ", HttpStatus.FORBIDDEN);
+            }
+        }
+
+        if (!clientLoan.get().getClient().equals(client)) {
+            return new ResponseEntity<>("No solicitaste este préstamo", HttpStatus.FORBIDDEN);
+        }
+
+        int payments = (int) Math.ceil(clientLoan.get().getFinalAmount() / clientLoan.get().getPayments());
+        int roundedAmount = (int) Math.ceil(amount);
+        if (roundedAmount != payments) {
+            return new ResponseEntity<>("Monto incorrecto de la cuota, debes pagar "+ payments, HttpStatus.FORBIDDEN);
+        }
+
+        if ( amount < 1 ){
+            return new ResponseEntity<>("Ingresa un valor mayor a 0", HttpStatus.FORBIDDEN);
+        }  else if ( accountAuthenticated.getBalance() < amount ){
+            return new ResponseEntity<>("Saldo insuficiente en tu cuenta " + accountAuthenticated.getNumber(), HttpStatus.FORBIDDEN);}
+
+        Double initialBalanceaccountAuth = accountAuthenticated.getBalance() - amount;
+        accountAuthenticated.setBalance( accountAuthenticated.getBalance() - amount );
+        clientLoan.get().setFinalAmount( clientLoan.get().getFinalAmount() - amount);
+
+        Transaction debitLoan = new Transaction(TransactionType.DEBITO, amount, description , LocalDateTime.now(), initialBalanceaccountAuth, true);
+        transactionService.saveTransaction(debitLoan);
+        accountAuthenticated.addTransaction(debitLoan);
+
+        accountService.saveAccount(accountAuthenticated);
+
+        if ( amount < clientLoan.get().getFinalAmount()){
+            clientLoan.get().setPayments(clientLoan.get().getPayments() - 1 ); //para actualizar la cantidad de cuotas
+        } else {
+            clientLoan.get().setPayments(0);
+        }
+        return new ResponseEntity<>("Pago efectuado correctamente", HttpStatus.CREATED);
+    }
+
 }

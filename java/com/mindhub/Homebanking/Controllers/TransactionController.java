@@ -95,11 +95,13 @@ public class TransactionController {
             return new ResponseEntity<>("La cuenta destino está inactiva", HttpStatus.FORBIDDEN);
         }
 
-        Transaction debitTransaction = new Transaction(TransactionType.DEBITO, -amount, accountOriginNumber + " " + description, LocalDateTime.now(), true);
-        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, amount, destinationAccountNumber + " " + description, LocalDateTime.now(), true);
+        Double initialOriginBalanceAccount = originAccount.getBalance() - amount;
+        Transaction debitTransaction = new Transaction(TransactionType.DEBITO, -amount, accountOriginNumber + " " + description, LocalDateTime.now(), initialOriginBalanceAccount, true);
+        Double initialDestinBalanceAccount = destinationAccount.getBalance() + amount;
+        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, amount, destinationAccountNumber + " " + description, LocalDateTime.now(), initialDestinBalanceAccount, true);
 
         originAccount.addTransaction(debitTransaction);
-        originAccount.addTransaction(creditTransaction);
+        destinationAccount.addTransaction(creditTransaction);
 
         transactionService.saveTransaction(debitTransaction);
         transactionService.saveTransaction(creditTransaction);

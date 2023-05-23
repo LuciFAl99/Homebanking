@@ -9,7 +9,8 @@ const app = createApp({
       email:"",
       loanName: "",
       maxAmount: 0,
-      paymentsText: ""
+      paymentsText: "",
+      interest: ""
     
     }
   },
@@ -51,13 +52,18 @@ const app = createApp({
        })
        .catch(error => console.log(error));
     },
+    logout() {
+      axios.post('/api/logout')
+        .then(() => window.location.href = "/Web/BigWing/index.html")
+    },
     createLoan() {
       const payments = this.paymentsText.split(",").map(payment => parseInt(payment.trim()));
       
       const loan = {
         name: this.loanName,
         maxAmount: this.maxAmount,
-        payments: payments
+        payments: payments,
+        interest: this.interest
       };
       
       axios.post("/api/admin/loan", loan)

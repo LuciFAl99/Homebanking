@@ -10,6 +10,7 @@ const app = createApp({
       cardType: "",
       cardColor: "",
       deletedCardNumbers: [],
+      isModalOpen: false,
     }
   },
   created() {
@@ -51,7 +52,9 @@ const app = createApp({
         .then(() => swal('Tarjeta creada con éxito'))
         .then(() => window.location.href = "/Web/cards.html")
         .catch(() => swal('No puedes crear mas tarjetas'))
+        
     },
+    
     eliminarTarjeta(id) {
       Swal.fire({
         title: '¿Estás seguro de que quieres eliminar esta tarjeta?',
@@ -91,6 +94,20 @@ const app = createApp({
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const year = date.getFullYear().toString().slice(2);
       return `${month}/${year}`;
+    },
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+      this.cardType = '';
+      this.cardColor = '';
+    },
+    createCardModal() {
+      // Lógica para crear la tarjeta desde el modal...
+      this.isModalOpen = false;
+      this.cardType = '';
+      this.cardColor = '';
     },
 
 }

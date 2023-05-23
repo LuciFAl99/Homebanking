@@ -44,4 +44,9 @@ public class ClientServiceImplement implements ClientService {
         return clientRepository.findByEmail(email) ;
     }
 
+    @Override
+    public boolean existsByEmail(String email) {
+        return clientRepository.existsByEmail(email);
+    }
+
 }

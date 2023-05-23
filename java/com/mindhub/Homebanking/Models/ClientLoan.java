@@ -14,7 +14,9 @@ public class ClientLoan {
     @GenericGenerator(name = "native", strategy = "native")
     private long id;
     private double amount;
+    private double finalAmount;
     private int payments;
+    private int originalPayments;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
@@ -25,10 +27,12 @@ public class ClientLoan {
     public ClientLoan() {
     }
 
-    public ClientLoan(double amount, int payments) {
+    public ClientLoan(double amount, double finalAmount, int payments, int originalPayments) {
         this.id = id;
         this.amount = amount;
+        this.finalAmount = finalAmount;
         this.payments = payments;
+        this.originalPayments = originalPayments;
     }
 
     public long getId() {
@@ -45,6 +49,14 @@ public class ClientLoan {
 
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public double getFinalAmount() {
+        return finalAmount;
+    }
+
+    public void setFinalAmount(double finalAmount) {
+        this.finalAmount = finalAmount;
     }
 
     public int getPayments() {
@@ -71,5 +83,11 @@ public class ClientLoan {
         this.loan = loan;
     }
 
+    public int getOriginalPayments() {
+        return originalPayments;
+    }
 
+    public void setOriginalPayments(int originalPayments) {
+        this.originalPayments = originalPayments;
+    }
 }

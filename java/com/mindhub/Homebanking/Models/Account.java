@@ -17,6 +17,7 @@ public class Account {
     private LocalDateTime creationDate;
     private double balance;
     private boolean active;
+    private AccountType accountType;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
@@ -27,11 +28,12 @@ public class Account {
     public Account() {
     }
 
-    public Account(String number, LocalDateTime creationDate, double balance, boolean active) {
+    public Account(String number, LocalDateTime creationDate, double balance, boolean active, AccountType accountType) {
         this.number = number;
         this.creationDate = creationDate;
         this.balance = balance;
         this.active = active;
+        this.accountType = accountType;
     }
 
     public long getId() {
@@ -107,5 +109,13 @@ public class Account {
     }
 
     public void withdraw(int i) {
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
     }
 }

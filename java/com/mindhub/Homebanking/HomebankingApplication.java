@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static com.mindhub.Homebanking.Models.CardColor.GOLD;
-import static com.mindhub.Homebanking.Models.TransactionType.CREDITO;
-import static com.mindhub.Homebanking.Models.TransactionType.DEBITO;
 
 @SpringBootApplication
 public class HomebankingApplication {
@@ -36,18 +33,18 @@ public class HomebankingApplication {
 			Client client3 = new Client("Maria", "Gonzalez", "maria@mindhub.com", passwordEncoder.encode("Maria123"));
             Client admin = new Client ("Admin", "admin", "admin@admin.com", passwordEncoder.encode("admin"));
 
-			Account account1 = new Account("VIN001", now, 5000, true);
-			Account account2 = new Account("VIN002", tomorrow, 7500, true);
-			Account account3 = new Account("VIN003", now, 7700, true);
-			Account account4 = new Account("VIN004", tomorrow, 5869, true);
-			Account account5 = new Account("VIN005", now, 9876, true);
+			Account account1 = new Account("VIN001", now, 50000, true, AccountType.AHORRO);
+			Account account2 = new Account("VIN002", tomorrow, 75000, true, AccountType.CORRIENTE);
+			Account account3 = new Account("VIN003", now, 7700, true, AccountType.AHORRO);
+			Account account4 = new Account("VIN004", tomorrow, 5869, true, AccountType.CORRIENTE);
+			Account account5 = new Account("VIN005", now, 9876, true, AccountType.CORRIENTE);
 
-			Transaction transaction1 = new Transaction(TransactionType.DEBITO, -2223, "TransacciónPrimera", tomorrow, true);
-			Transaction transaction2 = new Transaction(TransactionType.CREDITO, 4576, "Transacción", tomorrow, true);
-			Transaction transaction3 = new Transaction(TransactionType.DEBITO, -690576, "TransacciónUltima", now, true);
-			Transaction transaction4 = new Transaction(TransactionType.CREDITO, 7876, "Transacción4", tomorrow, true);
-			Transaction transaction5 = new Transaction(TransactionType.DEBITO, -3476, "Transacción5", tomorrow, true);
-			Transaction transaction6 = new Transaction(TransactionType.DEBITO, -6576, "Transacción6", now, true);
+			Transaction transaction1 = new Transaction(TransactionType.DEBITO, -2223, "TransacciónPrimera", tomorrow,  account1.getBalance(), true);
+			Transaction transaction2 = new Transaction(TransactionType.CREDITO, 4576, "Transacción", tomorrow,  account1.getBalance(), true);
+			Transaction transaction3 = new Transaction(TransactionType.DEBITO, -690576, "TransacciónUltima", now,  account2.getBalance(), true);
+			Transaction transaction4 = new Transaction(TransactionType.CREDITO, 7876, "Transacción4", tomorrow,  account3.getBalance(), true);
+			Transaction transaction5 = new Transaction(TransactionType.DEBITO, -3476, "Transacción5", tomorrow,  account4.getBalance(), true);
+			Transaction transaction6 = new Transaction(TransactionType.DEBITO, -6576, "Transacción6", now,  account5.getBalance(), true);
 
 			repository.save(client1);
 			repository.save(client2);
@@ -92,14 +89,14 @@ public class HomebankingApplication {
 
 
 
-			Loan loan1 = new Loan("Hipotecario", 500000, new ArrayList<>(Arrays.asList(12, 24, 36, 48, 60)));
-			Loan loan2 = new Loan("Personal", 100000, new ArrayList<>(Arrays.asList(6, 12, 24)));
-			Loan loan3 = new Loan("Automotriz", 300000, new ArrayList<>(Arrays.asList(6, 12, 24, 36)));
+			Loan loan1 = new Loan("Hipotecario", 500000, new ArrayList<>(Arrays.asList(12, 24, 36, 48, 60)), 1.2);
+			Loan loan2 = new Loan("Personal", 100000, new ArrayList<>(Arrays.asList(6, 12, 24)), 1.3);
+			Loan loan3 = new Loan("Automotriz", 300000, new ArrayList<>(Arrays.asList(6, 12, 24, 36)), 1.4);
 
-			ClientLoan clientLoan1 = new ClientLoan(400000, 60);
-			ClientLoan clientLoan2 = new ClientLoan(50000, 12);
-			ClientLoan clientLoan3 = new ClientLoan(100000, 24);
-			ClientLoan clientLoan4 = new ClientLoan(200000, 36);
+			ClientLoan clientLoan1 = new ClientLoan(400000,400000*loan1.getInterest(),60, 60);
+			ClientLoan clientLoan2 = new ClientLoan(50000, 50000*loan2.getInterest(), 12, 12);
+			ClientLoan clientLoan3 = new ClientLoan(100000, 100000*loan2.getInterest(),24, 24);
+			ClientLoan clientLoan4 = new ClientLoan(200000, 200000*loan3.getInterest(),36, 36);
 
 			client1.addClientLoan(clientLoan1);
 			client1.addClientLoan(clientLoan2);

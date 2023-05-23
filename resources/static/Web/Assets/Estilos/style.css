@@ -9,6 +9,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: center;
+    font-family: 'Oswald', sans-serif;
+
 }
 .body2{
     height: 100vh;
@@ -22,7 +24,7 @@ form,
 table,
 .json {
     border-radius: 10px;
-    background-color: #00a7f9;
+    background-color: blueviolet;
     color: white;
     padding: 20px;
 }
@@ -44,6 +46,8 @@ h3 {
 
 main {
     min-height: 81vh;
+    font-family: 'Oswald', sans-serif;
+
 }
 
 footer {
@@ -67,7 +71,6 @@ nav {
 nav a {
     text-decoration: none;
     color:blueviolet;
-    font-family: 'Roboto', sans-serif;
     margin-right: 2rem;
     font-size: large;
     position: relative;
@@ -237,5 +240,23 @@ h1 {
   .btn-submit:hover {
     background-color: #45a049;
   }
-  
+  @media only screen and (min-width: 320px) and (max-width: 863px){
+    nav a{
+      display: flex;
+      flex-wrap: wrap;
+      margin: 1rem;
+    }
+}  
+@media only screen and (min-width: 315px) and (max-width: 320px){
+    body {
+       overflow-x: hidden;
+      }
+  }
+  .table-rounded {
+    border-radius: 10px;
+}
+h2{
+    color: black;
+}
+
 

@@ -19,17 +19,18 @@ class WebAuthorization {
    @Bean
    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-       http.authorizeRequests()
+       http.cors().and().authorizeRequests()
                .antMatchers("/manager.html").hasAuthority("ADMIN")
                .antMatchers("/api/admin/loan").hasAuthority("ADMIN")
                .antMatchers("/rest/**","/api/loans").hasAnyAuthority("ADMIN", "CLIENT")
                .antMatchers("/h2-console/**").hasAnyAuthority("ADMIN")
                .antMatchers("/api/accounts").hasAuthority("ADMIN")
                .antMatchers("/Web/index.html", "/Web/Assets/**", "/Web/login.html", "/Web/registro.html", "/Web/BigWing/**").permitAll()
+               .antMatchers(HttpMethod.POST,"/api/clients/current/pay-card").permitAll()
                .antMatchers(HttpMethod.POST, "/api/clients/**").permitAll()
                .antMatchers(HttpMethod.POST ,"/api/login", "/api/logout").permitAll()
                .antMatchers(HttpMethod.POST, "/api/clients/current/export-pdf").hasAuthority("CLIENT")
-               .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current/loans/**",  "/api/loans/**").hasAnyAuthority("CLIENT", "ADMIN")
+               .antMatchers(HttpMethod.POST, "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current/loans/**",  "/api/loans/**", "/api/current/loans/**").hasAnyAuthority("CLIENT", "ADMIN")
                .antMatchers(HttpMethod.PUT, "/api/clients/current/cards", "/api/clients/current/accounts/delete").hasAuthority("CLIENT")
                .antMatchers( "/api/clients/current/accounts/**", "/api/clients/current/cards/**", "/api/clients/current/transactions/**", "/api/clients/current", "/api/clients/current/loans/**", "/api/loans/**").hasAuthority("CLIENT")
                .antMatchers("/Web/**").hasAuthority("CLIENT")

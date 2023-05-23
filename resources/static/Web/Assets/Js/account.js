@@ -5,7 +5,8 @@ const app = createApp({
         return {
             account: {},
             transactions: [],
-            id: (new URLSearchParams(location.search)).get("id")
+            id: (new URLSearchParams(location.search)).get("id"),
+    
         };
     },
 
@@ -26,13 +27,15 @@ const app = createApp({
         
         logout() {
           axios.post('/api/logout')
-              .then(() => window.location.href = "/Web/index.html")
+              .then(() => window.location.href = "/Web/BigWing/index.html")
       },
 
         sortTransactions() {
             this.transactions = this.account.transactions.sort((a, b) => b.id - a.id);
             this.transactions = this.transactions.reverse();
-        }
+        },
+       
+        
     }
 });
 

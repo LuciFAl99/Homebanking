@@ -3,6 +3,7 @@ package com.mindhub.Homebanking.Controllers;
 import com.mindhub.Homebanking.Dtos.AccountDto;
 import com.mindhub.Homebanking.Dtos.ClientDto;
 import com.mindhub.Homebanking.Models.Account;
+import com.mindhub.Homebanking.Models.AccountType;
 import com.mindhub.Homebanking.Models.Client;
 import com.mindhub.Homebanking.Repositories.AccountRepository;
 import com.mindhub.Homebanking.Repositories.ClientRepository;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -38,19 +41,23 @@ public class AccountController {
         return accountService.getAccount(id);
     }
 
-
-
     @PostMapping("/api/clients/current/accounts")
-    public ResponseEntity<Object> createAccount(Authentication authentication) {
+    public ResponseEntity<Object> createAccount(Authentication authentication, @RequestParam String accountType) {
         Random random = new Random();
         int randomNumber = random.nextInt(99999999);
         String accountNumber = "VIN" + String.format("%08d", randomNumber);
 
         Client client = clientService.findByEmail(authentication.getName());
+        List<Account> accountsActive = client.getAccounts().stream().filter(account -> account.isActive()).collect(Collectors.toList());
+        Set<Account> accounts = client.getAccounts();
+
         if (client.getAccounts().size() >= 3) {
-            return new ResponseEntity<>("Already Have 3 accounts", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Alcanzaste el límite de cuentas creadas", HttpStatus.FORBIDDEN);
         };
-        Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00, true);
+        if ( !accountType.equalsIgnoreCase("CORRIENTE") && !accountType.equalsIgnoreCase("AHORRO")){
+            return new ResponseEntity<>("Selecciona un tipo de cuenta correcto", HttpStatus.FORBIDDEN);}
+
+        Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00, true, AccountType.valueOf(accountType.toUpperCase()));
         accountService.saveAccount(accountGenerated);
         client.addAccount(accountGenerated);
         clientService.saveClient(client);

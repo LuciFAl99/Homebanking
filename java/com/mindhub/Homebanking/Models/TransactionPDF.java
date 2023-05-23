@@ -41,7 +41,7 @@ public class TransactionPDF {
     }
 
     private void writeTableData(PdfPTable table) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         for(Transaction transaction : listTransactions) {
             table.addCell(transaction.getDate().format(formatter));
@@ -101,4 +101,3 @@ public class TransactionPDF {
         doc.close();
     }
 }
-
