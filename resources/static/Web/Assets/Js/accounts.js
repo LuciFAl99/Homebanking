@@ -112,8 +112,11 @@ const app = createApp({
         }
       })
     },
+    getActiveAccounts() {
+      return this.accounts.filter(account => !account.active);
+    },
 
-    eliminarCuenta(id) {
+    deleteAccount(id) {
       Swal.fire({
         title: '¿Estás seguro de que quieres eliminar esta cuenta?',
         text: "La acción no se podrá revertir",
@@ -123,15 +126,14 @@ const app = createApp({
         confirmButtonText: 'Sí',
         preConfirm: () => {
           return axios.put('/api/clients/current/accounts', `id=${id}`)
-            .then(response => {
+            .then((response) => {
               Swal.fire({
                 icon: 'success',
                 text: 'La cuenta se eliminó correctamente',
                 showConfirmButton: false,
                 timer: 2000,
-              }).then(() => {
+              }).then(response => {
                 // Actualizar la lista de cuentas después de eliminar una cuenta
-                this.getClientInfo();
                 window.location.href = "/Web/accounts.html";
               });
             })
@@ -195,7 +197,7 @@ const app = createApp({
       axios.get("http://localhost:8080/api/clients/current")
         .then((data) => {
           this.clients = data.data;
-          this.accounts = this.clients.accounts;
+
         })
         .catch((error) => {
           console.log(error);

@@ -47,7 +47,7 @@
         <div class="container">
           <h1>Tus Cuentas</h1>
           <div class="d-flex justify-content-center mb-3 gap-2">
-            <div class="d-flex justify-content-center gap-2" v-if="clients.accounts.length<3">
+            <div class="d-flex justify-content-center gap-2">
               <div>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalCrearCuenta">
                   <i class="bi bi-plus-square"></i> Crear cuenta
@@ -99,7 +99,7 @@
 
         </div>
         <div class="row d-flex justify-content-center">
-          <div class="col-md-4 tarjeta pb-2" v-if="clients.accounts && clients.accounts.length > 0"
+          <div class="col-md-4 tarjeta pb-2" v-if="accounts.length != 0"
             v-for="account of accounts">
             <div>
               <div>
@@ -121,7 +121,7 @@
 
 
               </div>
-              <button @click="eliminarCuenta(account.id)" class="btn btn-danger mt-2">
+              <button @click="deleteAccount(account.id)" class="btn btn-danger mt-2">
                 <i class="fas fa-trash"></i> Eliminar Cuenta
               </button>
 
@@ -299,7 +299,7 @@
               <label for="account">Cuenta:</label>
               <select class="form-control" id="account" v-model="account3" required>
                 <option value="" disabled selected>Selecciona la cuenta</option>
-                <option v-for="account in accounts2" :value="account.number">{{ account.number }}</option>
+                <option v-for="account in accounts" :value="account.number">{{ account.number }}</option>
               </select>
             </div>
             <div class="mb-3">
@@ -338,7 +338,7 @@
             <h5 class="text-center textColor2 container">Seleccionar cuenta desde la que harás la transferencia</h5>
             <form class="d-flex justify-content-center container">
               <select class="form-select" v-model="selectAccount2">
-                <option v-for="account of accounts2" :value="account.number" :key="account.number">
+                <option v-for="account of accounts" :value="account.number" :key="account.number">
                   {{account.number}} Balance: {{account.balance}}
                 </option>
               </select>

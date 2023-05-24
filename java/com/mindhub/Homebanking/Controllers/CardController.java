@@ -39,15 +39,24 @@ public class CardController {
 
 
         Client client = clientService.findByEmail(authentication.getName());
-
-        if (client.getCards().stream().filter(e -> e.getType().toString().equals(type.toString())).count() >= 3) {
-            return new ResponseEntity<>("403 Ya tiene 3 tarjetas de ese tipo", HttpStatus.FORBIDDEN);
-        }
+        List<Card> accountsActive = client.getCards().stream().filter(card -> card.isActive()).collect(toList());
         Set<Card> cards = client.getCards().stream().filter(card -> card.getType() == type).collect(Collectors.toSet());
-        if (cards.stream().anyMatch(card -> card.getColor() == color)) {
-            return new ResponseEntity<>("Ya tienes una tarjeta de ese tipo", HttpStatus.FORBIDDEN);
-        }
 
+      /*  if (client.getCards().stream().filter(e -> e.getType().toString().equals(type.toString())).count() >= 3) {
+            return new ResponseEntity<>("403 Ya tiene 3 tarjetas de ese tipo", HttpStatus.FORBIDDEN);
+        }*/
+
+    /*    if (cards.stream().anyMatch(card -> card.getColor() == color)) {
+            return new ResponseEntity<>("Ya tienes una tarjeta de ese tipo", HttpStatus.FORBIDDEN);
+        }*/
+        boolean hasMatchingCard = client.getCards().stream()
+                .anyMatch(card -> card.getType().equals(CardType.valueOf(type.toString()))
+                        && card.getColor().equals(CardColor.valueOf(color.toString()))
+                        && card.isActive());
+
+        if (hasMatchingCard) {
+            return new ResponseEntity<>("Tú ya tienes una tarjeta de " + type + " " + color, HttpStatus.FORBIDDEN);
+        }
         String cardNumber = CardUtils.getCardNumber();
         int cvv = CardUtils.getCVV();
 
@@ -55,11 +64,13 @@ public class CardController {
         LocalDate thruDate = fromDate.plusYears(5);
         boolean active = true;
         boolean expired = (thruDate.isBefore(LocalDate.now()) || !active);
+        if ( cards.size() <= 20){
+            Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, thruDate, fromDate, active, expired);        cardService.saveCard(cardGenerated);
+            cardService.saveCard(cardGenerated);
+            client.addCard(cardGenerated);
+            clientService.saveClient(client);
+        }
 
-        Card cardGenerated = new Card(client.getFirstName() + " " + client.getLastName(), type, color, cardNumber, cvv, thruDate, fromDate, active, expired);        cardService.saveCard(cardGenerated);
-        cardService.saveCard(cardGenerated);
-        client.addCard(cardGenerated);
-        clientService.saveClient(client);
         return new ResponseEntity<>("Tarjeta creada con éxito", HttpStatus.CREATED);
 
     }

@@ -19,12 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Random;
-
-import static com.mindhub.Homebanking.Utils.ClientUtils.getAccountNumber;
-import static com.mindhub.Homebanking.Utils.ClientUtils.getRandomNumber;
-
-
 @RestController
 public class ClientController {
 

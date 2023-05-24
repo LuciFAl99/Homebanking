@@ -26,15 +26,15 @@ import static java.util.stream.Collectors.toList;
 @RestController
 public class LoanController {
     @Autowired
-    ClientLoanService clientLoanService;
+    private ClientLoanService clientLoanService;
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
     @Autowired
-    LoanService loanService;
+    private LoanService loanService;
     @Autowired
-    ClientService clientService;
+    private ClientService clientService;
     @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
 
     @GetMapping("/api/loans")
     public List<LoanDto> getLoans() {
@@ -159,7 +159,6 @@ public class LoanController {
                 return new ResponseEntity<>("Esta cuenta no te pertenece. ", HttpStatus.FORBIDDEN);
             }
         }
-
         if (!clientLoan.get().getClient().equals(client)) {
             return new ResponseEntity<>("No solicitaste este préstamo", HttpStatus.FORBIDDEN);
         }

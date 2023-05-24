@@ -40,8 +40,15 @@ public class AccountController {
     }
 
     @GetMapping("/api/accounts/{id}")
-    public AccountDto getAccount(@PathVariable Long id) {
-        return accountService.getAccount(id);
+    public ResponseEntity<Object> getAccount(@PathVariable Long id, Authentication authentication) {
+        Client client = clientService.findByEmail(authentication.getName());
+        Account account = accountService.findById(id);
+
+        if (account != null && account.getClient().equals(client)) {
+            return ResponseEntity.ok(new AccountDto(account));
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Esta cuenta no te pertenece");
     }
 
     @PostMapping("/api/clients/current/accounts")
@@ -53,16 +60,17 @@ public class AccountController {
         List<Account> accountsActive = client.getAccounts().stream().filter(account -> account.isActive()).collect(Collectors.toList());
         Set<Account> accounts = client.getAccounts();
 
-        if (client.getAccounts().size() >= 3) {
+        if (accountsActive.size() <= 2 && accounts.size() <= 20 ) {
+            Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00, true, AccountType.valueOf(accountType.toUpperCase()));
+            accountService.saveAccount(accountGenerated);
+            client.addAccount(accountGenerated);
+            clientService.saveClient(client);
+        }else{
             return new ResponseEntity<>("Alcanzaste el límite de cuentas creadas", HttpStatus.FORBIDDEN);
-        };
+        }
         if ( !accountType.equalsIgnoreCase("CORRIENTE") && !accountType.equalsIgnoreCase("AHORRO")){
             return new ResponseEntity<>("Selecciona un tipo de cuenta correcto", HttpStatus.FORBIDDEN);}
 
-        Account accountGenerated = new Account(accountNumber, LocalDateTime.now(), 0.00, true, AccountType.valueOf(accountType.toUpperCase()));
-        accountService.saveAccount(accountGenerated);
-        client.addAccount(accountGenerated);
-        clientService.saveClient(client);
         return new ResponseEntity<>( "Cuenta creada con éxito",HttpStatus.CREATED);
 
     }
@@ -76,8 +84,6 @@ public class AccountController {
 
         if( account == null ){
             return new ResponseEntity<>("Esta cuenta no existe", HttpStatus.FORBIDDEN);
-        } else if ( !account.isActive() ){
-            return new ResponseEntity<>("Esta cuenta esta inactiva", HttpStatus.FORBIDDEN);
         } else if( account.getBalance() > 0 ){
             return new ResponseEntity<>("No puedes eliminar esta cuenta porque tiene dinero", HttpStatus.FORBIDDEN);
         }
@@ -94,4 +100,3 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
-
