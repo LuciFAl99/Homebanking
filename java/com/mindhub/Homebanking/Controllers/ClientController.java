@@ -47,23 +47,32 @@ public class ClientController {
 
     @PostMapping( "/api/clients")
     public ResponseEntity<Object> register(
-
             @RequestParam String firstName, @RequestParam String lastName,
-
             @RequestParam String email, @RequestParam String password) {
 
-            if (firstName.isBlank()){
-                return new ResponseEntity<>("First name is required", HttpStatus.FORBIDDEN);
-            } else if (lastName.isBlank()) {
-                return new ResponseEntity<>("Last name is required", HttpStatus.FORBIDDEN);
-            } else if (email.isBlank()) {
-                return new ResponseEntity<>("email is required", HttpStatus.FORBIDDEN);
-            } else if (password.isBlank()){
-                return new ResponseEntity<>("password is required", HttpStatus.FORBIDDEN);
-            } else if (password.length() < 8){
-                return new ResponseEntity<>("La contraseña debe tener al menos 8 caracteres", HttpStatus.FORBIDDEN);
-            }
+        StringBuilder errors = new StringBuilder();
 
+        if (firstName.isBlank()) {
+            errors.append("Nombre es requerido\n");
+        }
+
+        if (lastName.isBlank()) {
+            errors.append("Apellido es requerido\n");
+        }
+
+        if (email.isBlank()) {
+            errors.append("Email es requerido\n");
+        }
+
+        if (password.isBlank()) {
+            errors.append("La contraseña es requerida\n");
+        } else if (password.length() < 8) {
+            errors.append("La contraseña debe tener al menos 8 caracteres\n");
+        }
+
+        if (errors.length() > 0) {
+            return new ResponseEntity<>(errors.toString(), HttpStatus.FORBIDDEN);
+        }
 
         if (clientService.findByEmail(email) !=  null) {
 

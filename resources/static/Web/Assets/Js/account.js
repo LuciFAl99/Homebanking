@@ -27,11 +27,11 @@ const app = createApp({
         
         logout() {
           axios.post('/api/logout')
-              .then(() => window.location.href = "/Web/BigWing/index.html")
+              .then(() => window.location.href = "/web/BigWing/index.html")
       },
 
         sortTransactions() {
-            this.transactions = this.account.transactions.sort((a, b) => b.id - a.id);
+            this.transactions = this.account.transactions.sort((a, b) => a.id - b.id);
             this.transactions = this.transactions.reverse();
         },
        

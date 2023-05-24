@@ -293,7 +293,6 @@
                 <option value="" disabled selected>Selecciona el préstamo</option>
                 <option v-for="loan in loans2" :value="loan.id">{{ loan.name }}</option>
               </select>
-
             </div>
             <div class="mb-3">
               <label for="account">Cuenta:</label>
@@ -301,6 +300,10 @@
                 <option value="" disabled selected>Selecciona la cuenta</option>
                 <option v-for="account in accounts" :value="account.number">{{ account.number }}</option>
               </select>
+            </div>
+            <div class="mb-3 maxAmount monto">
+              <label>Monto de la cuota:</label>
+              <p>$ {{ cuotaPrestamo }}</p>
             </div>
             <div class="mb-3">
               <label for="amount3">Monto:</label>
@@ -403,8 +406,6 @@
 
 
 </body>
-
-
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

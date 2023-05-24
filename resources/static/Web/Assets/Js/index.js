@@ -25,7 +25,7 @@ const app = createApp({
                 if (this.email === "admin@admin.com") {
                   window.location.href = "/manager.html";
                 } else {
-                  window.location.href = "/Web/accounts.html";
+                  window.location.href = "/web/accounts.html";
                 }
               })
               .catch(err=>this.errorLogin = true);
@@ -40,20 +40,20 @@ const app = createApp({
 
                     axios.post('/api/login', "email=" + this.postEmail + "&password=" + this.postPassword,
                      { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
-                        .then(() => window.location.href = "/Web/accounts.html")
+                        .then(() => window.location.href = "/web/accounts.html")
 
                 })
-                .catch(err => {
-                  if (this.postEmail == this.email) {
-                    this.errorMessage = 'El correo electrónico ya existe';
-                  } else {
-                    console.error(err);
-                    this.errorMessage = 'Ha ocurrido un error al registrar el usuario';
-                  }
-                  if(this.postPassword !== this.confirmPassword){
-                    this.errorPassCreate = true
-                  }
-                });    
+                .catch(error => {
+                  let errorMessage = error.response.data;
+                  errorMessage = errorMessage.replace(/\n/g, '<br>'); // Reemplazar saltos de línea por <br> para el formato HTML
+              
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error',
+                      html: errorMessage,
+                      timer: 6000,
+                  });
+              });
         }
         
     },

@@ -643,6 +643,13 @@ body {
 .maxAmount{
   background-color: rgb(70, 167, 70);
 }
+.monto{
+  width: 10rem;
+  padding: 2px;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  border-radius: 10px;
+}
 
 /* info section */
 .footer_bg {

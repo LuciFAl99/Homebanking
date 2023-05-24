@@ -45,12 +45,12 @@ const app = createApp({
     },
     logout() {
       axios.post('/api/logout')
-        .then(() => window.location.href = "/Web/BigWing/index.html")
+        .then(() => window.location.href = "/web/BigWing/index.html")
     },
     createCard() {
       axios.post('/api/clients/current/cards', "type=" + this.cardType.toUpperCase() + "&color=" + this.cardColor.toUpperCase(), { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
         .then(() => swal('Tarjeta creada con éxito'))
-        .then(() => window.location.href = "/Web/cards.html")
+        .then(() => window.location.href = "/web/cards.html")
         .catch(() => swal('No puedes crear mas tarjetas'))
         
     },
@@ -72,7 +72,7 @@ const app = createApp({
             }
             ))
             .then(response => {
-              window.location.href = "/Web/cards.html"
+              window.location.href = "/web/cards.html"
             })
             .catch(error => {
               Swal.showValidationMessage(

@@ -65,7 +65,7 @@ const app = createApp({
     },
     logout() {
       axios.post('/api/logout')
-        .then(() => window.location.href = "/Web/BigWing/index.html")
+        .then(() => window.location.href = "/web/BigWing/index.html")
     },
     calculateAmountWithoutInterest(amount) {
       return amount / 1.20;
@@ -99,7 +99,7 @@ const app = createApp({
               }).then(() => {
                 // Actualizar la lista de cuentas después de eliminar una cuenta
                 this.getClientInfo();
-                window.location.href = "/Web/accounts.html";
+                window.location.href = "/web/accounts.html";
               });
             })
             .catch(error => {
@@ -134,7 +134,7 @@ const app = createApp({
                 timer: 2000,
               }).then(response => {
                 // Actualizar la lista de cuentas después de eliminar una cuenta
-                window.location.href = "/Web/accounts.html";
+                window.location.href = "/web/accounts.html";
               });
             })
             .catch(error => {
@@ -183,7 +183,7 @@ const app = createApp({
                 text: 'Revisa tus descargas',
                 showConfirmButton: false,
                 timer: 3000,
-              }).then(() => window.location.href = "/Web/accounts.html")
+              }).then(() => window.location.href = "/web/accounts.html")
             })
             .catch(error => {
               Swal.showValidationMessage(
@@ -244,7 +244,7 @@ const app = createApp({
             icon: "success",
             text: "El préstamo se realizó correctamente",
           });
-          window.location.href = "/Web/accounts.html";
+          window.location.href = "/web/accounts.html";
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -257,7 +257,7 @@ const app = createApp({
     },
     logout() {
       axios.post("/api/logout").then(() => {
-        window.location.href = "/Web/BigWing/index.html";
+        window.location.href = "/web/BigWing/index.html";
       });
     },
     surePopUp() {
@@ -302,7 +302,7 @@ const app = createApp({
                     text: 'Pago realizado con éxito',
                     showConfirmButton: false,
                     timer: 2000,
-                  }).then(() => window.location.href = "/Web/accounts.html");
+                  }).then(() => window.location.href = "/web/accounts.html");
                 })
                 .catch(error => {
                   Swal.fire({
@@ -332,12 +332,24 @@ const app = createApp({
         }
 
         ))
-        .then(() => window.location.href = "/Web/accounts.html")
-        .catch((error) => Swal.fire({
-          icon: 'error',
-          text: error.response.data,
-          confirmButtonColor: "#7c601893",
-        }))
+        .then(() => window.location.href = "/web/accounts.html")
+        .catch((error) => {
+          if (Array.isArray(error.response.data)) {
+            const errorMessage = error.response.data.join('\n');
+            Swal.fire({
+              icon: 'error',
+              text: errorMessage,
+              confirmButtonColor: "#7c601893",
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              text: error.response.data,
+              confirmButtonColor: "#7c601893",
+            });
+          }
+        })
+        
 
     },
     transfer() {
@@ -358,9 +370,17 @@ const app = createApp({
   computed: {
   
     selectedAccount2() {
-      this.accountsExcludingO = this.accounts2.filter(account2 => account2.number !== this.selectAccount2);
+      this.accountsExcludingO = this.accounts2.filter(account2 => account2.number !== this.selectAccount2 && account2.active);
       console.log(this.accountsExcludingO);
-    }
+    },
+    cuotaPrestamo() {
+      const selectedLoan = this.loans2.find(loan => loan.id === this.idLoan);
+      if (selectedLoan) {
+        const cuota = selectedLoan.finalAmount / selectedLoan.payments 
+        return cuota.toFixed(2);
+      }
+      return '';
+    },
 
   },
 

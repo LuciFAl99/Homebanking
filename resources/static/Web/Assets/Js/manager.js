@@ -19,7 +19,7 @@ const app = createApp({
   },
   methods: {
     loadData() {
-      axios.get("http://localhost:8080/api/clients/")
+      axios.get("http://localhost:8080/api/clients")
         .then(response => {
           this.clientes = response.data;
           console.log(this.clientes)
@@ -28,8 +28,8 @@ const app = createApp({
         
     },
     logout() {
-        axios.post('/api/logout')
-            .then(() => window.location.href = "/Web/index.html")
+        axios.post('http://localhost:8080/api/logout')
+            .then(() => window.location.href = "/web/index.html")
     },
     addClient() {
       this.postClient();
@@ -54,7 +54,7 @@ const app = createApp({
     },
     logout() {
       axios.post('/api/logout')
-        .then(() => window.location.href = "/Web/BigWing/index.html")
+        .then(() => window.location.href = "/web/BigWing/index.html")
     },
     createLoan() {
       const payments = this.paymentsText.split(",").map(payment => parseInt(payment.trim()));
