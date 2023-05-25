@@ -49,9 +49,29 @@ const app = createApp({
     },
     createCard() {
       axios.post('/api/clients/current/cards', "type=" + this.cardType.toUpperCase() + "&color=" + this.cardColor.toUpperCase(), { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
-        .then(() => swal('Tarjeta creada con éxito'))
+      .then((response) => Swal.fire({
+        icon: 'success',
+        text: 'Tarjeta creada con éxito',
+
+      }
+
+      ))
         .then(() => window.location.href = "/web/cards.html")
-        .catch(() => swal('No puedes crear mas tarjetas'))
+        .catch(error => {
+          let errorMessage = error.response.data;
+          errorMessage = errorMessage.replace(/\n/g, '<br>'); // Reemplazar saltos de línea por <br> para el formato HTML
+      
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: errorMessage,
+            timer: 6000,
+            customClass: {
+              popup: 'error-popup' // Clase CSS personalizada para el mensaje de error
+            }
+          });
+          
+      });
         
     },
     

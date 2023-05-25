@@ -365,6 +365,8 @@ body {
 
 .service_section .custom_heading-container h2 {
   border-color: #f9fcfb;
+  color: black;
+  border-bottom: 1px solid #feb543;
 }
 
 .service_section .service_container {

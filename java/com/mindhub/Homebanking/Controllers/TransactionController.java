@@ -96,9 +96,9 @@ public class TransactionController {
         }
 
         Double initialOriginBalanceAccount = originAccount.getBalance() - amount;
-        Transaction debitTransaction = new Transaction(TransactionType.DEBITO, -amount, accountOriginNumber + " " + description, LocalDateTime.now(), initialOriginBalanceAccount, true);
+        Transaction debitTransaction = new Transaction(TransactionType.DEBITO, -amount, destinationAccountNumber + " " + description, LocalDateTime.now(), initialOriginBalanceAccount, true);
         Double initialDestinBalanceAccount = destinationAccount.getBalance() + amount;
-        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, amount, destinationAccountNumber + " " + description, LocalDateTime.now(), initialDestinBalanceAccount, true);
+        Transaction creditTransaction = new Transaction(TransactionType.CREDITO, amount, accountOriginNumber + " " + description, LocalDateTime.now(), initialDestinBalanceAccount, true);
 
         originAccount.addTransaction(debitTransaction);
         destinationAccount.addTransaction(creditTransaction);

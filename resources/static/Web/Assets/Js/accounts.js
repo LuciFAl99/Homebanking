@@ -333,23 +333,11 @@ const app = createApp({
 
         ))
         .then(() => window.location.href = "/web/accounts.html")
-        .catch((error) => {
-          if (Array.isArray(error.response.data)) {
-            const errorMessage = error.response.data.join('\n');
-            Swal.fire({
-              icon: 'error',
-              text: errorMessage,
-              confirmButtonColor: "#7c601893",
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              text: error.response.data,
-              confirmButtonColor: "#7c601893",
-            });
-          }
-        })
-        
+        .catch((error) => Swal.fire({
+          icon: 'error',
+          text: error.response.data,
+          confirmButtonColor: "#7c601893",
+        }))
 
     },
     transfer() {
