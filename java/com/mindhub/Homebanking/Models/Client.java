@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Entity
 public class Client {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
@@ -16,21 +15,32 @@ public class Client {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
-    Set<Account> accounts = new HashSet<>();
+    private Set<Account> accounts = new HashSet<>();
 
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<ClientLoan> clientLoans = new HashSet<>();
 
+    @OneToMany(mappedBy="client", fetch=FetchType.EAGER)
+    private Set<Card> cards = new HashSet<>();
 
     public Client() { }
 
-    public Client(String firstName, String lastName, String email) {
+    public Client(String firstName, String lastName, String email, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.password = password;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -56,6 +66,15 @@ public class Client {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Set<Account> getAccounts() {
         return accounts;
     }
@@ -64,9 +83,41 @@ public class Client {
         this.accounts = accounts;
     }
 
-    public void addAccount (Account account){
+
+
+    public Set<ClientLoan> getLoans() {
+        return clientLoans;
+    }
+
+    public void setLoans(Set<ClientLoan> loans) {
+        this.clientLoans = loans;
+    }
+
+    public Set<ClientLoan> getClientLoans() {
+        return clientLoans;
+    }
+
+    public Set<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
+    }
+
+    public void addAccount(Account account) {
         account.setClient(this);
         accounts.add(account);
+    }
+
+    public void addClientLoan(ClientLoan clientLoan) {
+        clientLoan.setClient(this);
+        clientLoans.add(clientLoan);
+    }
+
+    public void addCard(Card card){
+        card.setClient(this);
+        cards.add(card);
     }
 
     @Override
@@ -79,4 +130,7 @@ public class Client {
                 ", accounts=" + accounts +
                 '}';
     }
+
+
+
 }
