@@ -42,13 +42,6 @@ public class CardController {
         List<Card> accountsActive = client.getCards().stream().filter(card -> card.isActive()).collect(toList());
         Set<Card> cards = client.getCards().stream().filter(card -> card.getType() == type).collect(Collectors.toSet());
 
-      /*  if (client.getCards().stream().filter(e -> e.getType().toString().equals(type.toString())).count() >= 3) {
-            return new ResponseEntity<>("403 Ya tiene 3 tarjetas de ese tipo", HttpStatus.FORBIDDEN);
-        }*/
-
-    /*    if (cards.stream().anyMatch(card -> card.getColor() == color)) {
-            return new ResponseEntity<>("Ya tienes una tarjeta de ese tipo", HttpStatus.FORBIDDEN);
-        }*/
         boolean hasMatchingCard = client.getCards().stream()
                 .anyMatch(card -> card.getType().equals(CardType.valueOf(type.toString()))
                         && card.getColor().equals(CardColor.valueOf(color.toString()))
